@@ -28,10 +28,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid signature" }, { status: 400 });
     }
 
-    // 2. Parse Order ID (asumsi Anda mengirimkan ID Order kita langsung, atau misal dengan prefix "ORDER-123")
-    // Jika Anda memakai string murni, gunakan parseInt() tanpa replace. 
-    // Tapi jika Anda mengirim dengan prefix misal "ORDER-12", extract angkanya.
-    const orderIdInt = parseInt(String(order_id).replace(/\D/g, ""), 10);
+    // 2. Parse Order ID (karena dari backend kita mengirim ID murni berupa angka seperti "2")
+    const orderIdInt = parseInt(order_id, 10);
+
+    // Mencegah error jika Midtrans mengirimkan notifikasi "Test" dari Dashboard 
+    // (yang biasanya menggunakan order_id berupa huruf/UUID)
+    if (isNaN(orderIdInt) || orderIdInt > 2147483647) {
+      console.log(`Webhook diabaikan: order_id tidak valid atau terlalu besar (${order_id})`);
+      return NextResponse.json({ message: "Ignored: Invalid order_id format" }, { status: 200 });
+    }
 
     // 3. Tentukan status dari Midtrans
     let paymentStatusStr = "PENDING";

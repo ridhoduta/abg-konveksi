@@ -16,6 +16,7 @@
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
+    "google-auth-library": "^10.6.2",
     "jose": "^6.2.3",
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^3.3.1",

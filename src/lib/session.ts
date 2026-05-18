@@ -33,7 +33,7 @@ export async function decrypt(
     });
     return payload as unknown as SessionPayload;
   } catch {
-    console.log("Failed to verify session");
+    // Menghapus console.log agar tidak spam di terminal saat user belum login
     return undefined;
   }
 }
