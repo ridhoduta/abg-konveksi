@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GarmentOps - Cashier POS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#005048",
+                    "tertiary": "#006056",
+                    "on-background": "#131b2e",
+                    "tertiary-container": "#007b6e",
+                    "surface-tint": "#0053db",
+                    "on-secondary-container": "#5c2400",
+                    "primary-fixed": "#dbe1ff",
+                    "primary-container": "#2563eb",
+                    "on-secondary": "#ffffff",
+                    "outline": "#737686",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-tertiary-container": "#b1fff1",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f2f3ff",
+                    "surface-dim": "#d2d9f4",
+                    "on-surface": "#131b2e",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffdbca",
+                    "on-tertiary-fixed": "#00201c",
+                    "inverse-on-surface": "#eef0ff",
+                    "background": "#faf8ff",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#c3c6d7",
+                    "secondary": "#9d4300",
+                    "surface": "#faf8ff",
+                    "secondary-container": "#fd761a",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#004ac6",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#dae2fd",
+                    "tertiary-fixed": "#71f8e4",
+                    "tertiary-fixed-dim": "#4fdbc8",
+                    "surface-container-high": "#e2e7ff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#341100",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-secondary-fixed-variant": "#783200",
+                    "on-primary-fixed": "#00174b",
+                    "secondary-fixed-dim": "#ffb690",
+                    "surface-bright": "#faf8ff",
+                    "on-surface-variant": "#434655",
+                    "inverse-primary": "#b4c5ff",
+                    "inverse-surface": "#283044",
+                    "on-primary-container": "#eeefff",
+                    "surface-container": "#eaedff",
+                    "surface-variant": "#dae2fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "lg": "24px",
+                    "base": "8px",
+                    "sm": "12px",
+                    "margin-desktop": "32px",
+                    "xs": "4px",
+                    "gutter": "16px",
+                    "xl": "40px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- SideNavBar Shell -->
+<aside class="bg-surface-container dark:bg-surface-container-low h-screen w-72 flex flex-col fixed left-0 top-0 border-r border-outline-variant dark:border-outline z-50">
+<div class="flex flex-col h-full py-6">
+<div class="px-6 mb-8">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">GarmentOps</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="conveyor_belt">conveyor_belt</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center px-6 py-3 text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="point_of_sale">point_of_sale</span>
+<span class="font-label-md text-label-md">Cashier/POS</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="assessment">assessment</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+</nav>
+<div class="mt-auto px-6 space-y-1">
+<a class="flex items-center py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center py-3 text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20 transition-colors" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="bg-surface dark:bg-surface-dim flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
+<div class="flex items-center gap-6">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface-variant">Factory Management</h2>
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-xl pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary outline-none font-body-sm text-body-sm" placeholder="Search products, SKUs, or orders..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1.5 hover:bg-surface-container-high rounded-lg transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-body-md" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">Alex Rivera</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Floor Manager</p>
+</div>
+<img alt="Manager Avatar" class="w-10 h-10 rounded-full border-2 border-primary-container object-cover" data-alt="A professional headshot of a Hispanic male manager in his 30s, wearing a clean, dark polo shirt. He has a friendly, confident expression and short groomed hair. The background is a soft-focus modern office with warm, natural lighting. High-resolution photography with a shallow depth of field, emphasizing a corporate-modern professional aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDF5bd3j95jIp9eRY5jBV7HMWK3rUvXdtWQayheYaK_gEhTfisXyatPOePXBl6DvjuNvmWNkwlpH76JV4MF0WO2MtLx6a4Ub68xlSHZ-RUgyPRmg1qv90Bt3H8hUFLPyZGFy-ACaVmhp0v3LAVT77t0w4MUUjvQDMPoJKyXoPXpTxnJCDjT0-YGe2ppUyIBwbcPyCRStGfL1pe8V8KF6lvhbs1xiWSVxI-pXBdxOQzNhOudaHSFfEP78SHkdjNQtSmjhAKpl24sKcs"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pl-72 pt-16 h-screen overflow-hidden flex">
+<!-- Left Section: Product Grid (9-column fluid) -->
+<section class="flex-1 p-8 overflow-y-auto no-scrollbar bg-slate-50">
+<!-- Category Filter Chips -->
+<div class="flex gap-3 mb-8 overflow-x-auto pb-2 no-scrollbar">
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-sm">All Items</button>
+<button class="px-6 py-2 bg-white text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">T-Shirts</button>
+<button class="px-6 py-2 bg-white text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">Hoodies</button>
+<button class="px-6 py-2 bg-white text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">Polos</button>
+<button class="px-6 py-2 bg-white text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">Jackets</button>
+<button class="px-6 py-2 bg-white text-on-surface-variant border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-container-high transition-colors">Accessories</button>
+</div>
+<!-- Bento-style Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group cursor-pointer border border-transparent hover:border-primary transition-all">
+<div class="relative h-48 bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A premium quality white organic cotton t-shirt displayed flat on a clean, light gray surface. The lighting is bright and industrial, emphasizing the high-density fabric texture. Minimalist and professional presentation suitable for a high-end garment manufacturing catalog. The aesthetic is sharp, clean, and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSoUkgSuwQ1zDoof-gINsyNkFzLJs6GWS8VXrHYW6OVZtc5aGLl8yeg_QLbFfnQ5fhg9fm7XeohpjuvsRQE8dxKzm5CZJLikZRVz4IfPYXaNZAmVykBHzdJlNshzDgbNlbhJbaF8B8PusNwbPohqG9wMxC2aMnKLlY-gnqSK_DVd9pmsTvUJua2ZjQa1goLJjd9FzuJAOg5v-_oO5cu13P0CTCxWVE3uO1q6xUgGj430S_z2Tjvi9N-cnfsn2WPJxf_Fb0qVCVCu4"/>
+<span class="absolute top-3 left-3 px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded">In Stock: 42</span>
+</div>
+<div class="p-4 relative">
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Essential White Tee</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Heavyweight Cotton • S/M/L</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-primary">$29.99</span>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group cursor-pointer border border-transparent hover:border-primary transition-all">
+<div class="relative h-48 bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A sophisticated navy blue fleece hoodie with high-quality drawstring details and silver eyelets. The garment is shown from a three-quarter angle in a brightly lit studio environment with cool, professional tones. The lighting highlights the soft texture of the fleece and the precision of the stitching." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Sb-sQ8YCm3drXFBsAxZhVk6grDExB5X16bJVrRiSoM2YxaxC5hJMWGLzt2gNs3ntpR-_zIz-CjoLSp1QKLY5c7oZOJ2ig2h-X1Wxc7kpPQP3KTbAAO7yqbw8x1nZ-1j6oRJunB7c5OQ-EUYk5uaXbL9lhJ7lDBwaZzR7wDBgodHeRd0375Ku708G9Qhm1OJweCswo97oyrktacyF32pyAWMjgSvwbRZh7J0CqQYJIr3RbX6LPVGk6U0Se8GGIVPj1qi18C6B42Q"/>
+<span class="absolute top-3 left-3 px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded">In Stock: 18</span>
+</div>
+<div class="p-4 relative">
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Urban Fleece Hoodie</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Midnight Navy • XL</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-primary">$54.50</span>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group cursor-pointer border border-transparent hover:border-primary transition-all">
+<div class="relative h-48 bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A classic black piqué polo shirt with a crisp collar and three buttons, displayed on a minimalist wooden hanger. The background is a clean white industrial wall. The lighting is direct and clear, showcasing the texture of the piqué weave and the deep, consistent black dye." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfMt6FGmP1khDWrrqDkHMtuoDcFzmDZ0ze23BCfViQtxRE9hSKUZgNxLv-hv03ZfN6ZFE8oiuzk0b58fZvNlaYaO2Ajw2ERF1OQ4CDZ2gz-_yngimpBDKzwqIwcAKM9gdr9gtfy8briy_iUYFK2diWgPMGCEzrvbInjHBAUN5kl1dEz7fU-YU9UHGvTGQi6wd5-xnrktONQgH28b09cE_21S3vFyngj84xpnAR52fIeRr9kDjIAJdKOUPYRm1-SPAYk5pbOMRI_R8"/>
+<span class="absolute top-3 left-3 px-2 py-1 bg-error-container text-on-error-container font-label-sm text-label-sm rounded">Low Stock: 4</span>
+</div>
+<div class="p-4 relative">
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Classic Piqué Polo</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Jet Black • Slim Fit</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-primary">$38.00</span>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group cursor-pointer border border-transparent hover:border-primary transition-all">
+<div class="relative h-48 bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-performance olive green bomber jacket with utility zippers and ribbed cuffs. The garment is presented in a dynamic, slightly angled view that captures the sheen of the premium nylon fabric. The atmosphere is professional and industrial, with high-contrast lighting that emphasizes functional details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf5awsfZYTZEPExEi0AShlXA-YWoSaPUcc9O18pntSGgAnIPPa7bvb5shlV3qtKpMPahLxpY7Ti9REEiJdiGyEYZdrEIMFtO76p-MaDp_FYSLEoP-djFZHEjz3v2iIPLoyRzPHxailHaK11z1U2scpBy1P5kQPguJBQcEnEqd0XRgLrq3AC66a3gWg_k_MTvH-93ptDWG-Rz6LnVC2xqQ15C8849x17SmP2411Nmmdn5vTm6hRXgfDGVQ4WUgIVgbUgKBXNJodqW8"/>
+<span class="absolute top-3 left-3 px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded">In Stock: 12</span>
+</div>
+<div class="p-4 relative">
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Utility Bomber Jacket</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Olive Drab • Weatherproof</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-primary">$89.99</span>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group cursor-pointer border border-transparent hover:border-primary transition-all">
+<div class="relative h-48 bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A soft, charcoal gray crewneck sweatshirt made from premium brushed cotton. The image is a top-down view on a neutral surface, showcasing the symmetrical cut and reinforced neckline. Soft, diffused lighting creates an inviting, comfortable aesthetic suitable for a modern convection brand's digital storefront." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzcN8qtRe6_icrdicUH1eCft2r6eeO8T_Px-vzxuH2WvzA5EzjJKXcef1HCi6nkUV_lIAx55WOOuYPg0WVvRPh8EWLd-dJdu7O-sb01nv1MuX_oeFWSmfs5T2jb971q3GPmJblEJb3b4g4rKP4i3cVA9YM-8SxknJNjIzewFPxtO9eHqw39ueLZFt4ZLaiB6_JGIYtzVw9paXzD5kFooZ_SszyuazOp8gf0Jid39KbSAINzODaK-LGA-nVJiha1l5EuV9NAsCR9Ag"/>
+<span class="absolute top-3 left-3 px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded">In Stock: 25</span>
+</div>
+<div class="p-4 relative">
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Brushed Cotton Crew</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Charcoal • Heavy Knit</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-primary">$45.00</span>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] group cursor-pointer border border-transparent hover:border-primary transition-all">
+<div class="relative h-48 bg-slate-100 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A high-quality denim jacket in a medium-wash indigo, featuring copper buttons and classic chest pockets. The jacket is hung against a weathered industrial metal door, adding a sense of durability and heritage. The lighting is natural but strong, highlighting the vertical grain of the denim fabric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn0-BnH2L_PDK2sC3YP8XeJ6Ux8WdRpjaF752QZCvtjKcLaFrhyV4QJBtcS4m_cqXgk_74VB-nVglDff8w2mGOpQj6aB4IyoUFLuYWjZRJssP1i3-eaP16dCuMvN5n6jYnvsk43ga-sysmbXfm8hnUPAODHabZo92Mglzdap3wMwvaBJVSx7yDppA8soVOVeW8LFzm6injKLnt2NTXTjQdZ2Q6NcUarmUCFAaBWocWlbxP-oWb2dVheBDdGqmKjKOOVi1YL12T4JY"/>
+<span class="absolute top-3 left-3 px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded">In Stock: 7</span>
+</div>
+<div class="p-4 relative">
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Heritage Denim Jacket</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Indigo Wash • Unisex</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-primary">$72.00</span>
+<button class="w-10 h-10 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Section: Cart Panel (Fixed 3-column width) -->
+<section class="w-96 bg-white border-l border-outline-variant flex flex-col h-full shadow-2xl relative z-10">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Current Order</h2>
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded-full font-label-sm text-label-sm">3 Items</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">account_circle</span>
+<span class="font-body-sm text-body-sm">Guest Customer</span>
+<button class="ml-auto text-primary font-label-md text-label-md hover:underline">+ Add</button>
+</div>
+</div>
+<!-- Cart Items List -->
+<div class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
+<!-- Cart Item 1 -->
+<div class="flex gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A small square thumbnail of a white t-shirt on a gray background, with soft lighting and clean edges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGvYdhSKe8mjaMdre6gyrg_Zabl-WXB9gw09qedL01mVBDrKWY7WKvUcnG7kIGSpef3R-5DQYF_YdVFfWfBKKVS4yoFJiVGjM-8B6ctKiHuVgQs0jYH_MfwXknhb95dpp9c6N3AGtf5btRJUIhtAsClmGRvv5ETfYcBpu1nTafCFfqAVADIQJo0SDlOSukXiYLzdt26QDslL7uF-6uwNMtcPnhpZu6syFdL_gJSlDf0bkIy9VkHH_QSn_Jf7ji8s1gl4cm4h_hp2E"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface">Essential White Tee</h4>
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Size: M</p>
+<div class="flex justify-between items-center mt-2">
+<div class="flex items-center border border-outline-variant rounded-lg overflow-hidden">
+<button class="px-2 py-1 hover:bg-slate-50 text-on-surface-variant">-</button>
+<span class="px-3 py-1 font-label-md text-label-md border-x border-outline-variant">2</span>
+<button class="px-2 py-1 hover:bg-slate-50 text-on-surface-variant">+</button>
+</div>
+<span class="font-label-md text-label-md text-on-surface">$59.98</span>
+</div>
+</div>
+</div>
+<!-- Cart Item 2 -->
+<div class="flex gap-4">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A small square thumbnail of a navy blue hoodie, showing the soft fabric texture in professional studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVD5ziEet94HEVQ29-taIC1jMTRyYBD5pXl_oKCTqoQoI69BMcxmJNT7OWRCCnVDwiOPwlezAn-z1jIBCNO3a3_mNaroRqWON-Qg28iBMuXaMiMIVyEJg58HGB_9iIF2vva6kNEuWdPqzX7Eo9V6y3wScZ11A2azzs8DTy42ucM3V_KLis0Z8eP-bswRlpPPWJFtrwR0kdRLzsOkrvhPEnp9fXQf2xXuAWHs4eWXhGNSkbtUICGoVb4fts7zR55N4gfVj48DTolbU"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface">Urban Fleece Hoodie</h4>
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Size: XL</p>
+<div class="flex justify-between items-center mt-2">
+<div class="flex items-center border border-outline-variant rounded-lg overflow-hidden">
+<button class="px-2 py-1 hover:bg-slate-50 text-on-surface-variant">-</button>
+<span class="px-3 py-1 font-label-md text-label-md border-x border-outline-variant">1</span>
+<button class="px-2 py-1 hover:bg-slate-50 text-on-surface-variant">+</button>
+</div>
+<span class="font-label-md text-label-md text-on-surface">$54.50</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary & Actions -->
+<div class="p-6 bg-surface-container-low border-t border-outline-variant">
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-on-surface-variant font-body-md text-body-md">
+<span>Subtotal</span>
+<span>$114.48</span>
+</div>
+<div class="flex justify-between text-on-surface-variant font-body-md text-body-md">
+<span>Tax (8%)</span>
+<span>$9.16</span>
+</div>
+<div class="pt-3 border-t border-outline-variant flex justify-between text-on-surface font-headline-md text-headline-md font-bold">
+<span>Total</span>
+<span class="text-primary">$123.64</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<button class="flex flex-col items-center justify-center p-3 border border-outline-variant rounded-xl hover:bg-white transition-colors group">
+<span class="material-symbols-outlined mb-1 text-on-surface-variant group-hover:text-primary">payments</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant group-hover:text-primary">Cash</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 border border-primary bg-primary-container/10 rounded-xl hover:bg-white transition-colors group">
+<span class="material-symbols-outlined mb-1 text-primary">credit_card</span>
+<span class="font-label-sm text-label-sm text-primary">Card</span>
+</button>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-headline-md text-headline-md hover:bg-primary-container transition-all active:scale-[0.98] shadow-lg shadow-primary/20">
+                    Complete Order
+                </button>
+</div>
+</section>
+</main>
+<!-- FAB (Suppressed on POS screens as per logic, but here's a placeholder if needed for context) -->
+<!-- The instructions say to suppress the FAB on Details/Transactional screens. POS is Transactional. -->
+<script>
+        // Micro-interactions for the product cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple cart addition animation simulation
+        const addButtons = document.querySelectorAll('button .material-symbols-outlined[data-icon="add"]');
+        addButtons.forEach(btn => {
+            btn.parentElement.addEventListener('click', (e) => {
+                const ripple = document.createElement('div');
+                ripple.className = 'absolute inset-0 bg-white/30 animate-ping rounded-lg';
+                btn.parentElement.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 500);
+            });
+        });
+    </script>
+</body></html>

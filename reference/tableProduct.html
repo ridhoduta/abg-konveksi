@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Management | GarmentOps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#5c2400",
+                    "surface-container": "#eaedff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#783200",
+                    "on-surface": "#131b2e",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#eef0ff",
+                    "surface-bright": "#faf8ff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "secondary-container": "#fd761a",
+                    "tertiary-fixed-dim": "#4fdbc8",
+                    "tertiary": "#006056",
+                    "on-tertiary-fixed-variant": "#005048",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#dbe1ff",
+                    "on-background": "#131b2e",
+                    "inverse-surface": "#283044",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#71f8e4",
+                    "secondary": "#9d4300",
+                    "outline-variant": "#c3c6d7",
+                    "surface": "#faf8ff",
+                    "tertiary-container": "#007b6e",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b4c5ff",
+                    "surface-dim": "#d2d9f4",
+                    "surface-variant": "#dae2fd",
+                    "on-error-container": "#93000a",
+                    "background": "#faf8ff",
+                    "surface-tint": "#0053db",
+                    "on-secondary-fixed": "#341100",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#00201c",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "primary-container": "#2563eb",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-highest": "#dae2fd",
+                    "on-tertiary-container": "#b1fff1",
+                    "secondary-fixed": "#ffdbca",
+                    "outline": "#737686",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f2f3ff",
+                    "on-primary-container": "#eeefff",
+                    "primary": "#004ac6",
+                    "surface-container-high": "#e2e7ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "base": "8px",
+                    "xl": "40px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "margin-desktop": "32px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "label-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c3c6d7; border-radius: 10px; }
+        .custom-shadow { box-shadow: 0 4px 20px -2px rgba(19, 27, 46, 0.08); }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- SideNavBar Component -->
+<aside class="h-screen w-72 flex flex-col fixed left-0 top-0 bg-surface-container border-r border-outline-variant z-50">
+<div class="flex flex-col h-full py-6">
+<!-- Brand Section -->
+<div class="px-6 mb-8">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">GarmentOps</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Admin Console</p>
+</div>
+<!-- CTA -->
+<div class="px-6 mb-8">
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined">add</span>
+                    New Order
+                </button>
+</div>
+<!-- Primary Navigation -->
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 text-on-surface-variant font-label-md text-label-md hover:bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant font-label-md text-label-md hover:bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">conveyor_belt</span> Orders
+                </a>
+<a class="flex items-center px-6 py-3 text-primary font-bold border-r-4 border-primary font-label-md text-label-md bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">inventory_2</span> Inventory
+                </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant font-label-md text-label-md hover:bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">point_of_sale</span> Cashier/POS
+                </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant font-label-md text-label-md hover:bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">assessment</span> Reports
+                </a>
+</nav>
+<!-- Footer Navigation -->
+<div class="mt-auto border-t border-outline-variant pt-4">
+<a class="flex items-center px-6 py-3 text-on-surface-variant font-label-md text-label-md hover:bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">settings</span> Settings
+                </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant font-label-md text-label-md hover:bg-primary-container/10 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">help</span> Support
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="pl-72 min-h-screen">
+<!-- TopNavBar Component -->
+<header class="flex justify-between items-center h-16 w-full pl-8 pr-margin-desktop bg-surface border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-8">
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Factory Management</h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search inventory..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<button class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+<span class="font-label-md text-label-md text-on-surface">Profile</span>
+<img alt="Manager Avatar" class="w-8 h-8 rounded-full bg-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBal_VuebFL2hzMy1YqZ6t1kJ_FAxjl2BjHkPDM87R9LBGVxP7Chz4RxnMTY6QGwtmjaaeIQY8Sreuvoy64jMlzgyX8chJQbUrO8l63GaeGyuHw1kcVRahO2HX3jTmZAs4rEQNmhcUj8csvErImTdFdOOilsuIqAh8uLIfzTjLjRQFj1jp2GvzwZ3ntaQn7A5kCrQGRoznLpx9HVTOzdPQ9uFWl6V58WDJgFroYBRgKPZmy506bfv0ZGy5sWXUVV4NKtCAx5siiVCA"/>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-margin-desktop space-y-gutter">
+<!-- Inventory Table Section -->
+<section class="bg-surface-container-lowest rounded-xl custom-shadow border border-outline-variant overflow-hidden">
+<div class="p-lg flex justify-between items-center bg-surface-container-low/50 border-b border-outline-variant">
+<h3 class="font-headline-md text-headline-md text-on-surface">Product Inventory</h3>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span> Filter
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span> Export
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant">
+<th class="px-6 py-4 font-label-sm text-label-sm">ID</th>
+<th class="px-6 py-4 font-label-sm text-label-sm">Image</th>
+<th class="px-6 py-4 font-label-sm text-label-sm">Product Name</th>
+<th class="px-6 py-4 font-label-sm text-label-sm">Description</th>
+<th class="px-6 py-4 font-label-sm text-label-sm">Variants</th>
+<th class="px-6 py-4 font-label-sm text-label-sm">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-body-sm text-on-surface-variant">#GP-2041</td>
+<td class="px-6 py-4">
+<div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden flex items-center justify-center">
+<img alt="Product" class="w-full h-full object-cover" data-alt="A professional studio product photograph of a premium white cotton t-shirt with a clean, modern cut. The lighting is soft and even, highlighting the fine textile texture against a neutral light grey background. The aesthetic is minimal and corporate, suitable for a high-end garment manufacturing catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSwV64of7CnJBgqBHzq4p1WKOJgJJtd6FMVR_0hbw9A8U5VEMARirl6KCjPVhNHEd3o3lB8WzfhM3OQxUp_pzBZXqlab10q3lbmrAPxVE5BvJ46A2qrCcapqeeTU3HuaUWNKfXM1PrEl5J4mTk5WYk9S3sOQkznaEHqz7a37ikhYG8-2oLyuK0pdhHn32uPMwjz5COWdJBvVFer8fLRdmNTRAB3w5L_6UbPwZPh0oXhPBYjU4KGNpdrXDHS6LsQcKsgmFVhFIfIv0"/>
+</div>
+</td>
+<td class="px-6 py-4 font-label-md text-on-surface">Signature Cotton Tee</td>
+<td class="px-6 py-4 font-body-sm text-on-surface-variant max-w-xs truncate">Premium 180gsm combed cotton basics...</td>
+<td class="px-6 py-4">
+<div class="flex gap-1">
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">S</span>
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">M</span>
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">L</span>
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">XL</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 hover:bg-primary-container/20 rounded-full text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-body-sm text-on-surface-variant">#GP-2055</td>
+<td class="px-6 py-4">
+<div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden flex items-center justify-center">
+<img alt="Product" class="w-full h-full object-cover" data-alt="A sharp, detailed photograph of a navy blue structured blazer hung on a minimalist wooden hanger. The fabric shows high-quality tailoring and subtle texture. The environment is a clean, bright studio with soft professional lighting and a crisp, modern aesthetic. Colors are deep and saturated for a premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSjnUQBm4xnE94L_FCsudVK7I85afliw6xGmdQMaHFWHbpfn3HtyjJHJbQUEEtw7_1rNNVrL4sHuDLMGQkFNfWcpcOFZo6e_tNgZO7wKHceM5wxEPpiMbLJ0TrPQJS7J2CXF-Cwmv4bOGgVwY67IBz2mz3NZjokd2pu5uRtn5D8UJUlDCaLYfuqQc8-khaHOC43xdk47nLWx7DbS1k9C4ZsLr5Wm-jmNkXrDVVY3iSqpI4_k-Aq8hBKvmzrFecap2R0Ckv56YDx6I"/>
+</div>
+</td>
+<td class="px-6 py-4 font-label-md text-on-surface">Oxford Structured Blazer</td>
+<td class="px-6 py-4 font-body-sm text-on-surface-variant max-w-xs truncate">Slim-fit linen blend with formal lining...</td>
+<td class="px-6 py-4">
+<div class="flex gap-1">
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">M</span>
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">L</span>
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">XL</span>
+<span class="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">XXL</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 hover:bg-primary-container/20 rounded-full text-primary transition-all">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Grid for Forms and Details -->
+<div class="grid grid-cols-12 gap-gutter items-start">
+<!-- Product Form Section -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl custom-shadow border border-outline-variant p-lg">
+<div class="flex items-center gap-4 mb-lg">
+<div class="w-10 h-10 bg-primary-container/10 text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined">add_box</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Add New Product</h3>
+</div>
+<form class="space-y-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface">Product Name</label>
+<input class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="e.g. Classic Denim Jacket" type="text"/>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface">Category</label>
+<select class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all appearance-none">
+<option>Tops &amp; Shirts</option>
+<option>Outerwear</option>
+<option>Bottoms</option>
+<option>Accessories</option>
+</select>
+</div>
+</div>
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface">Description</label>
+<textarea class="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none" placeholder="Describe the material, fit, and care instructions..." rows="4"></textarea>
+</div>
+<!-- Dynamic Variants Section -->
+<div class="space-y-lg">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface">Product Variants &amp; Pricing</label>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-1 hover:underline" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span> Add Variant
+                                </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md" id="variant-container">
+<!-- Variant Row -->
+<div class="p-4 bg-surface-container-low border border-outline-variant rounded-xl space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Size S</span>
+<button class="text-error hover:opacity-70 transition-opacity" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-md">$</span>
+<input class="w-full pl-8 pr-4 py-2 bg-white border border-outline-variant rounded-lg text-body-sm focus:ring-2 focus:ring-primary/20 outline-none" type="number" value="24.99"/>
+</div>
+</div>
+<!-- Variant Row -->
+<div class="p-4 bg-surface-container-low border border-outline-variant rounded-xl space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Size M</span>
+<button class="text-error hover:opacity-70 transition-opacity" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-md">$</span>
+<input class="w-full pl-8 pr-4 py-2 bg-white border border-outline-variant rounded-lg text-body-sm focus:ring-2 focus:ring-primary/20 outline-none" type="number" value="24.99"/>
+</div>
+</div>
+<!-- Variant Row -->
+<div class="p-4 bg-surface-container-low border border-outline-variant rounded-xl space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Size L</span>
+<button class="text-error hover:opacity-70 transition-opacity" type="button">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-md">$</span>
+<input class="w-full pl-8 pr-4 py-2 bg-white border border-outline-variant rounded-lg text-body-sm focus:ring-2 focus:ring-primary/20 outline-none" type="number" value="26.99"/>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-lg flex justify-end gap-4 border-t border-outline-variant">
+<button class="px-8 py-3 border border-outline-variant rounded-xl font-label-md text-label-md hover:bg-surface-container transition-colors" type="reset">Discard</button>
+<button class="px-8 py-3 bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all" type="submit">Save Product</button>
+</div>
+</form>
+</section>
+<!-- Media Upload Section -->
+<section class="col-span-12 lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container-lowest rounded-xl custom-shadow border border-outline-variant p-lg">
+<label class="font-label-md text-label-md text-on-surface block mb-base">Product Images</label>
+<div class="aspect-square w-full border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined text-outline group-hover:text-primary text-[48px] mb-4 transition-colors">cloud_upload</span>
+<p class="font-label-md text-label-md text-on-surface text-center">Click or drag image to upload</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2 text-center">PNG, JPG up to 10MB (1:1 ratio recommended)</p>
+</div>
+<div class="grid grid-cols-4 gap-base mt-lg">
+<div class="aspect-square rounded-lg border border-outline-variant bg-surface overflow-hidden relative group">
+<img alt="Thumbnail" class="w-full h-full object-cover" data-alt="A high-resolution flat-lay of a collection of folded cotton t-shirts in varied earthy tones. The setting is a clean, bright industrial surface with sharp shadows and a highly organized, professional visual style. The lighting is crisp and cool, accentuating the textile quality and vibrant colors of the garments." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKEq8w8knPjXRmqULXLy-rgmBXkNSTWCdC1PqLjg5PbIcf7sqvhe7lHdXg6sis6DHkgs18wDgJDyb-YoaklwvgcaJnn43sr9rRS0efs_eZigZMUsPh89GBlLNG46vZSFUDte7EjaPP-oMCl1VWcNpQ-blDoWH_PY3Q2YGMJZVOr_rwRGA3_KkiNOp5wp2lCRK2gYStdukrn3NaRrbHYDoUXlmswUO5bnXbWPElUmC0o4bS9QDrqCF4l0KbUeXK8kJarbOPGPJ1j74"/>
+<button class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="aspect-square rounded-lg border border-outline-variant bg-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-[18px]">add</span>
+</div>
+</div>
+</div>
+<div class="bg-primary-container/10 rounded-xl p-lg border border-primary/20">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<div class="space-y-base">
+<h4 class="font-label-md text-label-md text-primary">Pro Tip</h4>
+<p class="font-body-sm text-body-sm text-on-primary-fixed-variant">Detailed descriptions and consistent 1:1 image ratios can increase sales by 40% on the POS interface.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for active states or form highlights
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('focus', () => {
+                element.parentElement.querySelector('label')?.classList.add('text-primary');
+            });
+            element.addEventListener('blur', () => {
+                element.parentElement.querySelector('label')?.classList.remove('text-primary');
+            });
+        });
+    </script>
+</body></html>

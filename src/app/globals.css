@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surface Colors */
+  --surface: #faf8ff;
+  --surface-dim: #d2d9f4;
+  --surface-bright: #faf8ff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f2f3ff;
+  --surface-container: #eaedff;
+  --surface-container-high: #e2e7ff;
+  --surface-container-highest: #dae2fd;
+  --on-surface: #131b2e;
+  --on-surface-variant: #434655;
+  --inverse-surface: #283044;
+  --inverse-on-surface: #eef0ff;
+  --outline: #737686;
+  --outline-variant: #c3c6d7;
+  --surface-tint: #0053db;
+
+  /* Brand Colors */
+  --primary: #004ac6;
+  --on-primary: #ffffff;
+  --primary-container: #2563eb;
+  --on-primary-container: #eeefff;
+  --inverse-primary: #b4c5ff;
+
+  --secondary: #9d4300;
+  --on-secondary: #ffffff;
+  --secondary-container: #fd761a;
+  --on-secondary-container: #5c2400;
+
+  --tertiary: #006056;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #007b6e;
+  --on-tertiary-container: #b1fff1;
+
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+
+  /* Fixed Colors */
+  --primary-fixed: #dbe1ff;
+  --primary-fixed-dim: #b4c5ff;
+  --on-primary-fixed: #00174b;
+  --on-primary-fixed-variant: #003ea8;
+  --secondary-fixed: #ffdbca;
+  --secondary-fixed-dim: #ffb690;
+  --on-secondary-fixed: #341100;
+  --on-secondary-fixed-variant: #783200;
+  --tertiary-fixed: #71f8e4;
+  --tertiary-fixed-dim: #4fdbc8;
+  --on-tertiary-fixed: #00201c;
+  --on-tertiary-fixed-variant: #005048;
+
+  /* Legacy / General */
+  --background: #faf8ff;
+  --on-background: #131b2e;
+  --surface-variant: #dae2fd;
 }
 
 @theme inline {
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  
+  /* Map CSS Variables to Tailwind Theme */
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+  
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-on-background: var(--on-background);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+
+  /* Radius */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-base: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Typography Base Styles */
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--on-background);
+    font-family: var(--font-sans);
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Typography Utility Classes */
+@utility headline-xl {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: -0.02em;
+}
+
+@utility headline-lg {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  
+  @media (max-width: 768px) {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+
+@utility headline-md {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+@utility body-lg {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+@utility body-md {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+@utility body-sm {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+@utility label-md {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+}
+
+@utility label-sm {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+/* Component Design System Rules */
+@utility input-field {
+  @apply bg-surface-container-lowest border border-outline-variant rounded-md px-md py-xs outline-none transition-all;
+  &:focus {
+    @apply border-primary ring-2 ring-primary/15;
+  }
+}
+
+@utility btn-primary {
+  @apply bg-primary text-on-primary px-lg py-sm rounded-md font-semibold transition-all hover:bg-primary-container active:translate-y-px;
+}
+
+@utility btn-secondary {
+  @apply bg-secondary text-on-secondary px-lg py-sm rounded-md font-semibold transition-all hover:bg-secondary-container active:translate-y-px;
+}
+
+@utility btn-success {
+  @apply bg-tertiary text-on-tertiary px-lg py-sm rounded-md font-semibold transition-all hover:bg-tertiary-container active:translate-y-px;
+}
+
+@utility status-chip {
+  @apply px-sm py-xs rounded-full text-xs font-bold;
+}
+
+@utility card-pos {
+  @apply bg-white border border-outline-variant rounded-lg overflow-hidden transition-all hover:shadow-md;
 }
