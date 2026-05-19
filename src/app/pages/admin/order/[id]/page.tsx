@@ -116,11 +116,11 @@ export default function OrderDetailPage() {
               onChange={(e) => setStatus(e.target.value)}
               className="bg-surface border border-outline-variant rounded-lg px-4 py-2 font-label-md outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="PENDING">PENDING</option>
-              <option value="PROCESSING">PROCESSING</option>
-              <option value="SHIPPED">SHIPPED</option>
-              <option value="DONE">DONE</option>
-              <option value="CANCELLED">CANCELLED</option>
+              <option value="PENDING">MENUNGGU</option>
+              <option value="PROCESSING">DIPROSES</option>
+              <option value="SHIPPED">DIKIRIM</option>
+              <option value="DONE">SELESAI</option>
+              <option value="CANCELLED">BATAL</option>
             </select>
             <button 
               onClick={handleUpdateStatus}

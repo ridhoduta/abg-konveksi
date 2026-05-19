@@ -174,7 +174,9 @@ export async function GET(req: NextRequest) {
               include: { product: true, size: true }
             }
           }
-        }
+        },
+        payment: true,
+        createdBy: true,
       },
       orderBy: { createdAt: "desc" }
     });

@@ -25,6 +25,8 @@ export interface OrderResponse {
   addressId: number | null;
   userId: number | null;
   status: string;
+  metode: string;
+  paymentStatus: string;
   total: number;
   note: string | null;
   createdAt: string;

@@ -5,7 +5,7 @@ import { Image, Pencil, Trash2 } from "lucide-react";
 
 export function ProductTable({ products, onDelete }: { products: Product[], onDelete: (id: number) => void }) {
   const router = useRouter();
-
+  
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left border-collapse">

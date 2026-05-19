@@ -28,7 +28,7 @@ export function KasirSidebar({ activePath }: { activePath: string }) {
             }`}
           >
             <LayoutDashboard className="w-5 h-5 mr-4" />
-            <span className="font-label-md text-label-md">Home (POS)</span>
+            <span className="font-label-md text-label-md">Beranda</span>
           </Link>
           
           <Link 
@@ -40,7 +40,7 @@ export function KasirSidebar({ activePath }: { activePath: string }) {
             }`}
           >
             <ShoppingBag className="w-5 h-5 mr-4" />
-            <span className="font-label-md text-label-md">Products</span>
+            <span className="font-label-md text-label-md">Barang</span>
           </Link>
           <Link 
             href="/pages/kasir/order" 
@@ -51,7 +51,7 @@ export function KasirSidebar({ activePath }: { activePath: string }) {
             }`}
           >
             <Receipt className="w-5 h-5 mr-4" />
-            <span className="font-label-md text-label-md">orders</span>
+            <span className="font-label-md text-label-md">Pesanan</span>
           </Link>
         </nav>
         
