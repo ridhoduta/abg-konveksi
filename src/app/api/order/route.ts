@@ -6,7 +6,7 @@ import { getSession } from "@/lib/session";
 export async function POST(req: NextRequest) {
   try {
     const session = await getSession();
-    if (!session || !["ADMIN", "KASIR"].includes(session.role)) {
+    if (!session || !["ADMIN", "KASIR", "CUSTOMER"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -26,6 +26,10 @@ export async function POST(req: NextRequest) {
     }
 
     let finalCustomerId = customerId ? Number(customerId) : null;
+    if (session.role.toUpperCase() === "CUSTOMER") {
+      finalCustomerId = session.userId;
+    }
+    
     let finalAddressId = addressId ? Number(addressId) : null;
 
     // Handle nested route concept: creating address inside order creation
@@ -72,7 +76,7 @@ export async function POST(req: NextRequest) {
     // create order beserta data paymentnya (Nested Write)
     const order = await prisma.order.create({
       data: {
-        userId: session.userId,
+        userId: ["ADMIN", "KASIR"].includes(session.role.toUpperCase()) ? session.userId : null,
         customerId: finalCustomerId,
         addressId: finalAddressId,
         total: Number(total),
@@ -155,11 +159,12 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const session = await getSession();
-    if (!session || !["ADMIN", "KASIR"].includes(session.role)) {
+    if (!session || !["ADMIN", "KASIR", "CUSTOMER"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const orders = await prisma.order.findMany({
+      where: session.role.toUpperCase() === "CUSTOMER" ? { customerId: session.userId } : undefined,
       include: {
         customer: true,
         address: true,

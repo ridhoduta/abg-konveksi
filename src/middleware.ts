@@ -21,11 +21,11 @@ export default async function middleware(req: NextRequest) {
   }
 
   // 5. Role-based protection
-  if (path.startsWith("/pages/admin") && session?.role !== "ADMIN") {
+  if (path.startsWith("/pages/admin") && session?.role?.toUpperCase() !== "ADMIN") {
     return NextResponse.redirect(new URL("/pages/login", req.nextUrl));
   }
 
-  if (path.startsWith("/pages/kasir") && session?.role !== "KASIR") {
+  if (path.startsWith("/pages/kasir") && session?.role?.toUpperCase() !== "KASIR") {
     return NextResponse.redirect(new URL("/pages/login", req.nextUrl));
   }
 

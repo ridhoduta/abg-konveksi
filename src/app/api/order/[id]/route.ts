@@ -6,7 +6,7 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
   try {
     const params = await props.params;
     const session = await getSession();
-    if (!session || !["ADMIN", "KASIR"].includes(session.role)) {
+    if (!session || !["ADMIN", "KASIR", "CUSTOMER"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -30,6 +30,10 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
       return NextResponse.json({ message: "Order not found" }, { status: 404 });
     }
 
+    if (session.role.toUpperCase() === "CUSTOMER" && order.customerId !== session.userId) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     return NextResponse.json({ data: order });
   } catch (error) {
     console.error("Get Order Error:", error);
@@ -41,7 +45,7 @@ export async function PUT(req: NextRequest, props: { params: Promise<{ id: strin
   try {
     const params = await props.params;
     const session = await getSession();
-    if (!session || !["ADMIN", "KASIR"].includes(session.role)) {
+    if (!session || !["ADMIN", "KASIR"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -67,7 +71,7 @@ export async function DELETE(req: NextRequest, props: { params: Promise<{ id: st
   try {
     const params = await props.params;
     const session = await getSession();
-    if (!session || !["ADMIN", "KASIR"].includes(session.role)) {
+    if (!session || !["ADMIN", "KASIR"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 

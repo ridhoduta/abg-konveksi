@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     // Only admins can create accounts
     const session = await getSession();
-    if (!session || session.role !== "ADMIN") {
+    if (!session || session.role.toUpperCase() !== "ADMIN") {
       return Response.json(
         { message: "Akses ditolak. Hanya admin yang bisa membuat akun." },
         { status: 403 }
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   try {
     const session = await getSession();
-    if (!session || session.role !== "ADMIN") {
+    if (!session || session.role.toUpperCase() !== "ADMIN") {
       return Response.json({ message: "Akses ditolak" }, { status: 403 });
     }
 

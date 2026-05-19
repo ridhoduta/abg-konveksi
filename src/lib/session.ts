@@ -1,6 +1,6 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET || "default_fallback_secret_keep_it_secure_in_prod";
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -57,8 +57,23 @@ export async function createSession(
 }
 
 export async function getSession(): Promise<SessionPayload | undefined> {
+  // 1. Coba dapatkan session dari cookie
   const cookieStore = await cookies();
-  const session = cookieStore.get("session")?.value;
+  let session = cookieStore.get("session")?.value;
+
+  // 2. Jika tidak ada cookie (misal request dari Flutter), coba dapatkan dari Authorization header
+  if (!session) {
+    try {
+      const headersList = await headers();
+      const authHeader = headersList.get("authorization");
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        session = authHeader.substring(7);
+      }
+    } catch (e) {
+      // bypass jika headers() dipanggil di konteks non-request
+    }
+  }
+
   if (!session) return undefined;
   return await decrypt(session);
 }
