@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Role: 'Role',
   User: 'User',
+  FcmToken: 'FcmToken',
   Customer: 'Customer',
   Address: 'Address',
   Category: 'Category',
@@ -98,6 +99,17 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const FcmTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FcmTokenScalarFieldEnum = (typeof FcmTokenScalarFieldEnum)[keyof typeof FcmTokenScalarFieldEnum]
 
 
 export const CustomerScalarFieldEnum = {

@@ -10,6 +10,7 @@
  */
 export type * from './models/Role'
 export type * from './models/User'
+export type * from './models/FcmToken'
 export type * from './models/Customer'
 export type * from './models/Address'
 export type * from './models/Category'

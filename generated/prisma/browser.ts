@@ -28,6 +28,11 @@ export type Role = Prisma.RoleModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model FcmToken
+ * 
+ */
+export type FcmToken = Prisma.FcmTokenModel
+/**
  * Model Customer
  * 
  */

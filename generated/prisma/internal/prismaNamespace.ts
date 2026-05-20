@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Role: 'Role',
   User: 'User',
+  FcmToken: 'FcmToken',
   Customer: 'Customer',
   Address: 'Address',
   Category: 'Category',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "user" | "customer" | "address" | "category" | "product" | "size" | "productVariant" | "order" | "orderItem" | "orderPayment"
+    modelProps: "role" | "user" | "fcmToken" | "customer" | "address" | "category" | "product" | "size" | "productVariant" | "order" | "orderItem" | "orderPayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -559,6 +560,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    FcmToken: {
+      payload: Prisma.$FcmTokenPayload<ExtArgs>
+      fields: Prisma.FcmTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FcmTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FcmTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.FcmTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FcmTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+        }
+        findMany: {
+          args: Prisma.FcmTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>[]
+        }
+        create: {
+          args: Prisma.FcmTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+        }
+        createMany: {
+          args: Prisma.FcmTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FcmTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.FcmTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+        }
+        update: {
+          args: Prisma.FcmTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.FcmTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FcmTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FcmTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.FcmTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FcmTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.FcmTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFcmToken>
+        }
+        groupBy: {
+          args: Prisma.FcmTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FcmTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FcmTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FcmTokenCountAggregateOutputType> | number
         }
       }
     }
@@ -1287,6 +1362,17 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const FcmTokenScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FcmTokenScalarFieldEnum = (typeof FcmTokenScalarFieldEnum)[keyof typeof FcmTokenScalarFieldEnum]
+
+
 export const CustomerScalarFieldEnum = {
   id: 'id',
   googleId: 'googleId',
@@ -1603,6 +1689,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   role?: Prisma.RoleOmit
   user?: Prisma.UserOmit
+  fcmToken?: Prisma.FcmTokenOmit
   customer?: Prisma.CustomerOmit
   address?: Prisma.AddressOmit
   category?: Prisma.CategoryOmit
