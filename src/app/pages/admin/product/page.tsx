@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AdminSidebar } from "@/components/adminSidebar";
 import { useProduct } from "../../hooks/useProduct";
 import { ProductTable } from "../../component/productTable";
 import { Plus, Filter, Download } from "lucide-react";
@@ -16,10 +15,7 @@ export default function ProductListPage() {
   }, [fetchProducts]);
 
   return (
-    <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-      <AdminSidebar activePath="produk" />
-
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex justify-between items-center mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
           <div className="flex items-center gap-8">
             <h2 className="headline-md font-bold text-on-surface">Factory Management</h2>
@@ -61,6 +57,5 @@ export default function ProductListPage() {
           )}
         </section>
       </main>
-    </div>
   );
 }

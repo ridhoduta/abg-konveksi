@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useOrder } from "../../hooks/useOrder";
 import { Filter, Download } from "lucide-react";
 import { OrderTableKasir } from "../../component/orderTableKasir";
-import { KasirSidebar } from "@/components/kasirSidebar";
 
 export default function AdminOrderPage() {
   const { orders, loading, error, fetchOrders, deleteOrder } = useOrder();
@@ -14,10 +13,7 @@ export default function AdminOrderPage() {
   }, [fetchOrders]);
 
   return (
-    <div className="flex min-h-screen bg-white font-sans text-on-surface">
-      <KasirSidebar activePath="order" />
-
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
         {error && (
           <div className="bg-error-container text-on-error-container p-4 rounded-lg mb-6">
             {error}
@@ -46,6 +42,5 @@ export default function AdminOrderPage() {
           )}
         </section>
       </main>
-    </div>
   );
 }

@@ -2,7 +2,6 @@
 
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import { AdminSidebar } from "@/components/adminSidebar";
 import { useProduct } from "@/app/pages/hooks/useProduct";
 import { ArrowLeft, Pencil, PlusCircle, Trash2, X, Lightbulb } from "lucide-react";
 
@@ -145,10 +144,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   };
 
   return (
-    <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-      <AdminSidebar activePath="inventory" />
-
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex items-center gap-4 mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
           <button 
             onClick={() => router.back()}
@@ -376,6 +372,5 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           </div>
         )}
       </main>
-    </div>
   );
 }

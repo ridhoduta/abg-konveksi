@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authService, AuthUser } from "@/app/service/authService";
-import { AdminSidebar } from "@/components/adminSidebar";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -30,11 +29,8 @@ export default function AdminPage() {
   );
 
   return (
-    <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-      <AdminSidebar activePath="dashboard" />
-
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
       {/* Main Content Area */}
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex justify-between items-center mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
           <h1 className="headline-lg">Dashboard Overview</h1>
           <div className="flex items-center gap-md">
@@ -77,6 +73,5 @@ export default function AdminPage() {
           </div>
         </section>
       </main>
-    </div>
   );
 }

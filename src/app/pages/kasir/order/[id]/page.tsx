@@ -2,11 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { AdminSidebar } from "@/components/adminSidebar";
 import { orderService } from "@/app/service/orderService";
 import { ArrowLeft, Save, MapPin, Truck, Store, User, Clock, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
-import { KasirSidebar } from "@/components/kasirSidebar";
 
 const MapContainer = dynamic(() => import("react-leaflet").then(mod => mod.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then(mod => mod.TileLayer), { ssr: false });
@@ -74,31 +72,22 @@ export default function OrderDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-        <AdminSidebar activePath="pesanan" />
-        <main className="flex-1 p-xl overflow-y-auto ml-72 flex justify-center items-center">
-          <div className="spinner !border-primary !border-t-transparent w-10 h-10 rounded-full border-4"></div>
-        </main>
-      </div>
+      <main className="flex-1 p-xl overflow-y-auto ml-72 flex justify-center items-center">
+        <div className="spinner !border-primary !border-t-transparent w-10 h-10 rounded-full border-4"></div>
+      </main>
     );
   }
 
   if (!order) {
     return (
-      <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-        <KasirSidebar activePath="order" />
-        <main className="flex-1 p-xl overflow-y-auto ml-72">
-          <p className="text-on-surface-variant text-center mt-20">Pesanan tidak ditemukan.</p>
-        </main>
-      </div>
+      <main className="flex-1 p-xl overflow-y-auto ml-72">
+        <p className="text-on-surface-variant text-center mt-20">Pesanan tidak ditemukan.</p>
+      </main>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-white font-sans text-on-surface">
-      <KasirSidebar activePath="order" />
-
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex flex-wrap items-center gap-4 mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
           <button onClick={() => router.back()} className="p-2 hover:bg-surface-container-low rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5" />
@@ -249,6 +238,5 @@ export default function OrderDetailPage() {
           </div>
         </div>
       </main>
-    </div>
   );
 }

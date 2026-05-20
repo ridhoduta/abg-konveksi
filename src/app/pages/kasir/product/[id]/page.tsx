@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { authService, AuthUser } from "@/app/service/authService";
 import { useProduct } from "@/app/pages/hooks/useProduct";
 import { Pencil, PlusCircle, Trash2, X, Lightbulb, Bell, HelpCircle } from "lucide-react";
-import { KasirSidebar } from "@/components/kasirSidebar";
 
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -172,11 +171,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="min-h-screen bg-background text-on-background overflow-x-hidden">
-      <KasirSidebar activePath="product" />
-
+    <>
       {/* TopNavBar */}
-      <header className="bg-surface dark:bg-surface-dim flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
+      <header className="bg-surface dark:bg-white-120flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
         <div className="flex items-center gap-6">
           <h2 className="font-headline-md text-headline-md font-bold text-on-surface dark:text-on-surface-variant">Edit Product</h2>
         </div>
@@ -435,6 +432,6 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 }

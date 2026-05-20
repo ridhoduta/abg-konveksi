@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { AdminSidebar } from "@/components/adminSidebar";
 import { orderService } from "@/app/service/orderService";
 import { ArrowLeft, Save, MapPin, Truck, Store, User, Clock, FileText } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -59,45 +58,46 @@ export default function OrderDetailPage() {
     }
     setSaving(false);
   };
+  const getStatusLabel = (status: string) => {
+    switch(status) {
+      case "PENDING": return "MENUNGGU";
+      case "PROCESSING": return "DIPROSES";
+      case "SHIPPED": return "DIKIRIM";
+      case "DONE": return "SELESAI";
+      case "CANCELLED": return "BATAL";
+      default: return status;
+    }
+  };
 
-  const getStatusColor = (s: string) => {
-    switch(s) {
-      case "PENDING": return "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-900";
-      case "PROCESSING": return "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-900";
-      case "SHIPPED": return "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-900";
-      case "DONE": return "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900";
-      case "CANCELLED": return "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900";
-      default: return "bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700";
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case "PENDING": return "bg-yellow-50 text-yellow-800 border border-yellow-200";
+      case "PROCESSING": return "bg-blue-50 text-blue-800 border border-blue-200";
+      case "SHIPPED": return "bg-purple-50 text-purple-800 border border-purple-200";
+      case "DONE": return "bg-green-50 text-green-800 border border-green-200";
+      case "CANCELLED": return "bg-red-50 text-red-800 border border-red-200";
+      default: return "bg-gray-50 text-gray-800 border border-gray-200";
     }
   };
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-        <AdminSidebar activePath="pesanan" />
-        <main className="flex-1 p-xl overflow-y-auto ml-72 flex justify-center items-center">
-          <div className="spinner !border-primary !border-t-transparent w-10 h-10 rounded-full border-4"></div>
-        </main>
-      </div>
+      <main className="flex-1 p-xl overflow-y-auto ml-72 flex justify-center items-center">
+        <div className="spinner !border-primary !border-t-transparent w-10 h-10 rounded-full border-4"></div>
+      </main>
     );
   }
 
   if (!order) {
     return (
-      <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-        <AdminSidebar activePath="pesanan" />
-        <main className="flex-1 p-xl overflow-y-auto ml-72">
-          <p className="text-on-surface-variant text-center mt-20">Pesanan tidak ditemukan.</p>
-        </main>
-      </div>
+      <main className="flex-1 p-xl overflow-y-auto ml-72">
+        <p className="text-on-surface-variant text-center mt-20">Pesanan tidak ditemukan.</p>
+      </main>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-      <AdminSidebar activePath="pesanan" />
-
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex flex-wrap items-center gap-4 mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
           <button onClick={() => router.back()} className="p-2 hover:bg-surface-container-low rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5" />
@@ -106,7 +106,7 @@ export default function OrderDetailPage() {
             <h2 className="headline-md font-bold text-on-surface flex items-center gap-3">
               Detail Pesanan: ORD-{String(order.id).padStart(4, '0')}
               <span className={`px-3 py-1 rounded-full font-label-sm text-xs font-bold border ${getStatusColor(order.status)}`}>
-                {order.status}
+                {getStatusLabel(order.status)}
               </span>
             </h2>
           </div>
@@ -269,6 +269,5 @@ export default function OrderDetailPage() {
           </div>
         </div>
       </main>
-    </div>
   );
 }

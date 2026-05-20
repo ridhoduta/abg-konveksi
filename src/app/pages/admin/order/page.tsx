@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { AdminSidebar } from "@/components/adminSidebar";
 import { useOrder } from "../../hooks/useOrder";
 import { OrderTable } from "../../component/orderTable";
 import { Filter, Download } from "lucide-react";
@@ -14,10 +13,7 @@ export default function AdminOrderPage() {
   }, [fetchOrders]);
 
   return (
-    <div className="flex min-h-screen bg-surface-dim font-sans text-on-surface">
-      <AdminSidebar activePath="pesanan" />
-
-      <main className="flex-1 p-xl overflow-y-auto ml-72">
+    <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex justify-between items-center mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
           <div className="flex items-center gap-8">
             <h2 className="headline-md font-bold text-on-surface">Manajemen Pesanan</h2>
@@ -52,6 +48,5 @@ export default function AdminOrderPage() {
           )}
         </section>
       </main>
-    </div>
   );
 }

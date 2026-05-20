@@ -6,7 +6,6 @@ import { authService, AuthUser } from "@/app/service/authService";
 import { useProduct } from "@/app/pages/hooks/useProduct";
 import { ProductTableKasir } from "@/app/pages/component/productTableKasir";
 import { Plus, Filter, Download, Bell, HelpCircle } from "lucide-react";
-import { KasirSidebar } from "@/components/kasirSidebar";
 
 export default function ProductListPage() {
   const router = useRouter();
@@ -43,8 +42,7 @@ export default function ProductListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-on-background overflow-x-hidden">
-      <KasirSidebar activePath="product" />
+    <>
       {/* Main Content */}
       <main
         className="
@@ -134,6 +132,6 @@ export default function ProductListPage() {
           )}
         </section>
       </main>
-    </div>
+    </>
   );
 }

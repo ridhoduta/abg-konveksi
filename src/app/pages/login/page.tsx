@@ -35,7 +35,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-dim p-md relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-white-120p-md relative overflow-hidden">
       {/* Brand card background / minimal branding */}
       <div className="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
         <div className="absolute -top-xl -right-xl w-96 h-96 bg-primary rounded-full blur-3xl"></div>

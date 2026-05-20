@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { authService, AuthUser } from "@/app/service/authService";
 import { useProduct, Product, ProductVariant } from "@/app/pages/hooks/useProduct";
 import { useCart } from "./context/CartContext";
-import { KasirSidebar } from "@/components/kasirSidebar";
 import { CardProduct, ProductModal } from "@/app/pages/component/cardProduct";
 import { Search, Bell, HelpCircle, Plus, Minus, Trash2, CreditCard, Banknote, ShoppingBag } from "lucide-react";
 
@@ -58,11 +57,10 @@ export default function KasirPage() {
   }
 
   return (
-     <div className="min-h-screen bg-background text-on-background overflow-x-hidden">
-      <KasirSidebar activePath="home" />
+    <>
 
       {/* TopNavBar */}
-      <header className="bg-surface dark:bg-surface-dim flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
+      <header className="bg-surface dark:bg-white-120 flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
         <div className="flex items-center gap-6">
           <div className="relative w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant w-5 h-5" />
@@ -217,6 +215,6 @@ export default function KasirPage() {
           onAddToCart={addToCart} 
         />
       )}
-    </div>
+    </>
   );
 }
