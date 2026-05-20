@@ -21,7 +21,6 @@ export function AdminSidebar({ activePath = "dashboard" }: AdminSidebarProps) {
     { id: "dashboard", label: "Dashboard", path: "/pages/admin", icon: LayoutDashboard },
     { id: "produk", label: "Produk", path: "/pages/admin/product", icon: Package },
     { id: "pesanan", label: "Pesanan", path: "/pages/admin/order", icon: ShoppingCart },
-    { id: "users", label: "Manajemen User", path: "/pages/admin/user", icon: Users },
     { id: "laporan", label: "Laporan", path: "/pages/admin/report", icon: FileText },
   ];
 
