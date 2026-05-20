@@ -52,6 +52,7 @@ model Customer {
   email     String    @unique
   name      String
   avatar    String?
+  password     String?
   phone     String?
   addresses Address[]
   orders    Order[]

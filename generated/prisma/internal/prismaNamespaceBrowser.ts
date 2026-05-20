@@ -118,6 +118,7 @@ export const CustomerScalarFieldEnum = {
   email: 'email',
   name: 'name',
   avatar: 'avatar',
+  password: 'password',
   phone: 'phone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
