@@ -79,7 +79,7 @@ export async function PUT(req: NextRequest, props: { params: Promise<{ id: strin
         });
 
         if (customerTokens.length > 0) {
-          const tokens = customerTokens.map((t) => t.token);
+          const tokens = customerTokens.map((t: { token: string }) => t.token);
 
           // Dynamically import firebase-admin
           const admin = (await import("@/lib/firebase-admin")).default;
