@@ -79,12 +79,12 @@ export async function PUT(req: NextRequest, props: { params: Promise<{ id: strin
         });
 
         if (customerTokens.length > 0) {
-          const tokens = customerTokens.map((t: { token: string }) => t.token);
+          const tokens: string[] = customerTokens.map((t: { token: string }) => t.token);
 
           // Dynamically import firebase-admin
           const admin = (await import("@/lib/firebase-admin")).default;
 
-          const messages = tokens.map((token) => ({
+          const messages = tokens.map((token: string) => ({
             token,
             notification: {
               title: "Update Status Pesanan",
