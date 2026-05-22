@@ -85,7 +85,7 @@ export async function GET(req: NextRequest) {
 
     const productSalesMap: Record<number, { name: string; quantity: number; revenue: number }> = {};
 
-    payments.forEach((payment) => {
+    payments.forEach((payment: any) => {
       const date = new Date(payment.paidAt || payment.createdAt);
       const monthIndex = date.getMonth();
       
@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
 
       // Accumulate product sales
       if (payment.order && payment.order.items) {
-        payment.order.items.forEach((item) => {
+        payment.order.items.forEach((item: any) => {
           const product = item.variant?.product;
           if (product) {
             if (!productSalesMap[product.id]) {
@@ -142,7 +142,7 @@ export async function GET(req: NextRequest) {
       .slice(0, 5);
 
     // Format recent transactions
-    const recentTransactions = payments.slice(0, 10).map((payment) => ({
+    const recentTransactions = payments.slice(0, 10).map((payment: any) => ({
       id: payment.id,
       orderId: payment.orderId,
       customerName: payment.order?.customer?.name || "Pelanggan Guest",
