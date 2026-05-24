@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
     // 2. Cek apakah user (Customer) sudah ada
     let customer = await prisma.customer.findUnique({
       where: { googleId: googleId },
+      include: { addresses: true },
     });
 
     // 3. Jika belum ada, buat user (Customer) baru
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest) {
         customer = await prisma.customer.update({
           where: { email: email },
           data: { googleId: googleId, avatar: picture },
+          include: { addresses: true },
         });
       } else {
         // Buat Customer baru
@@ -67,6 +69,7 @@ export async function POST(req: NextRequest) {
             name: name,
             avatar: picture,
           },
+          include: { addresses: true },
         });
       }
     }
@@ -88,6 +91,7 @@ export async function POST(req: NextRequest) {
         name: customer.name,
         email: customer.email,
         role: "CUSTOMER",
+        addresses: customer.addresses,
       },
       token: token, // Flutter App akan menyimpan token ini (misal di SharedPreferences)
     }, { status: 200 });

@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     // 1. Cari customer berdasarkan email (email unik di schema)
     const customer = await prisma.customer.findUnique({
       where: { email },
+      include: { addresses: true },
     });
 
     if (!customer) {
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
         name: customer.name,
         email: customer.email,
         role: "CUSTOMER",
+        addresses: customer.addresses,
       },
       token: token,
     });

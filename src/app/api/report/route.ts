@@ -6,21 +6,161 @@ export async function GET(req: NextRequest) {
   try {
     // 1. Authenticate the user
     const session = await getSession();
-    if (!session || !["ADMIN"].includes(session.role.toUpperCase())) {
+    if (!session || !["ADMIN", "KASIR"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized. Admin privileges required." }, { status: 401 });
     }
 
-    // 2. Parse selected year from query parameters
+    // 2. Parse query parameters
     const { searchParams } = new URL(req.url);
-    const yearParam = searchParams.get("year");
+    const type = searchParams.get("type") || "yearly"; // "yearly" or "daily"
     const currentYear = new Date().getFullYear();
+
+    // ============================================
+    // DAILY REPORT
+    // ============================================
+    if (type === "daily") {
+      const yearParam = searchParams.get("year");
+      const monthParam = searchParams.get("month");
+      const year = yearParam ? parseInt(yearParam, 10) : currentYear;
+      const month = monthParam ? parseInt(monthParam, 10) : new Date().getMonth();
+
+      if (isNaN(year) || year < 2000 || year > 2100) {
+        return NextResponse.json({ message: "Invalid year parameter" }, { status: 400 });
+      }
+
+      if (isNaN(month) || month < 0 || month > 11) {
+        return NextResponse.json({ message: "Invalid month parameter" }, { status: 400 });
+      }
+
+      // Get the number of days in the selected month
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const startOfMonth = new Date(year, month, 1, 0, 0, 0, 0);
+      const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59, 999);
+
+      const payments = await prisma.orderPayment.findMany({
+        where: {
+          status: "VERIFIED",
+          createdAt: {
+            gte: startOfMonth,
+            lte: endOfMonth,
+          },
+        },
+        include: {
+          order: {
+            include: {
+              customer: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      const isDemoData = payments.length === 0;
+
+      if (isDemoData) {
+        const demoData = generateDailyDemoData(year, month, daysInMonth);
+        return NextResponse.json({
+          message: "Demo daily report data retrieved successfully",
+          data: demoData,
+        });
+      }
+
+      // Calculate actual daily statistics
+      const dailyIncome = Array.from({ length: daysInMonth }, (_, i) => ({
+        day: i + 1,
+        revenue: 0,
+        ordersCount: 0,
+      }));
+
+      let totalRevenue = 0;
+      const orderIds = new Set<number>();
+      const paymentMethodsMap: Record<string, { amount: number; count: number }> = {
+        CASH: { amount: 0, count: 0 },
+        TRANSFER: { amount: 0, count: 0 },
+        COD: { amount: 0, count: 0 },
+      };
+
+      payments.forEach((payment: any) => {
+        const date = new Date(payment.paidAt || payment.createdAt);
+        const dayIndex = date.getDate() - 1;
+        
+        if (dayIndex >= 0 && dayIndex < daysInMonth) {
+          dailyIncome[dayIndex].revenue += payment.amount;
+          dailyIncome[dayIndex].ordersCount += 1;
+        }
+
+        totalRevenue += payment.amount;
+        orderIds.add(payment.orderId);
+
+        const method = (payment.method || "TRANSFER").toUpperCase();
+        if (paymentMethodsMap[method]) {
+          paymentMethodsMap[method].amount += payment.amount;
+          paymentMethodsMap[method].count += 1;
+        }
+      });
+
+      const totalOrders = orderIds.size;
+      const averageOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+
+      // Calculate growth vs previous day
+      const today = new Date().getDate() - 1;
+      const todayRevenue = today < daysInMonth ? dailyIncome[today]?.revenue || 0 : 0;
+      const yesterdayRevenue = today > 0 ? dailyIncome[today - 1]?.revenue || 0 : 0;
+      
+      let dailyGrowthPercentage = 0;
+      if (yesterdayRevenue > 0) {
+        dailyGrowthPercentage = Math.round(((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100);
+      } else if (todayRevenue > 0) {
+        dailyGrowthPercentage = 100;
+      }
+
+      const paymentMethods = Object.entries(paymentMethodsMap).map(([method, stats]) => ({
+        method,
+        amount: stats.amount,
+        count: stats.count,
+        percentage: totalRevenue > 0 ? Math.round((stats.amount / totalRevenue) * 100) : 0,
+      }));
+
+      const recentTransactions = payments.slice(0, 10).map((payment: any) => ({
+        id: payment.id,
+        orderId: payment.orderId,
+        customerName: payment.order?.customer?.name || "Pelanggan Guest",
+        amount: payment.amount,
+        method: payment.method,
+        status: payment.status,
+        date: payment.paidAt || payment.createdAt,
+      }));
+
+      return NextResponse.json({
+        message: "Daily report data retrieved successfully",
+        data: {
+          isDemoData: false,
+          year,
+          month,
+          totalRevenue,
+          totalOrders,
+          averageOrderValue,
+          dailyGrowthPercentage,
+          dailyIncome,
+          paymentMethods,
+          recentTransactions,
+        },
+      });
+    }
+
+    // ============================================
+    // YEARLY REPORT (existing)
+    // ============================================
+    const yearParam = searchParams.get("year");
     const year = yearParam ? parseInt(yearParam, 10) : currentYear;
 
     if (isNaN(year) || year < 2000 || year > 2100) {
       return NextResponse.json({ message: "Invalid year parameter" }, { status: 400 });
     }
 
-    // 3. Query verified payments from DB for the specified year
+    // ... (rest of existing yearly code)
     const startOfYear = new Date(`${year}-01-01T00:00:00.000Z`);
     const endOfYear = new Date(`${year}-12-31T23:59:59.999Z`);
 
@@ -56,7 +196,6 @@ export async function GET(req: NextRequest) {
     const isDemoData = payments.length === 0;
 
     if (isDemoData) {
-      // Return high-fidelity realistic demo data if database is empty
       const demoData = generateDemoData(year);
       return NextResponse.json({
         message: "Demo report data retrieved successfully",
@@ -64,10 +203,8 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // 4. Calculate actual database statistics
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
     
-    // Initialize monthly tracker
     const monthlyIncome = monthNames.map((name, index) => ({
       monthIndex: index,
       month: name,
@@ -89,15 +226,12 @@ export async function GET(req: NextRequest) {
       const date = new Date(payment.paidAt || payment.createdAt);
       const monthIndex = date.getMonth();
       
-      // Accumulate monthly income
       monthlyIncome[monthIndex].revenue += payment.amount;
       monthlyIncome[monthIndex].ordersCount += 1;
 
-      // Accumulate total metrics
       totalRevenue += payment.amount;
       orderIds.add(payment.orderId);
 
-      // Accumulate method stats
       const method = (payment.method || "TRANSFER").toUpperCase();
       if (paymentMethodsMap[method]) {
         paymentMethodsMap[method].amount += payment.amount;
@@ -106,7 +240,6 @@ export async function GET(req: NextRequest) {
         paymentMethodsMap[method] = { amount: payment.amount, count: 1 };
       }
 
-      // Accumulate product sales
       if (payment.order && payment.order.items) {
         payment.order.items.forEach((item: any) => {
           const product = item.variant?.product;
@@ -128,7 +261,6 @@ export async function GET(req: NextRequest) {
     const totalOrders = orderIds.size;
     const averageOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
 
-    // Format payment methods for client
     const paymentMethods = Object.entries(paymentMethodsMap).map(([method, stats]) => ({
       method,
       amount: stats.amount,
@@ -136,12 +268,10 @@ export async function GET(req: NextRequest) {
       percentage: totalRevenue > 0 ? Math.round((stats.amount / totalRevenue) * 100) : 0,
     }));
 
-    // Format top selling products for client (sort descending by revenue)
     const topProducts = Object.values(productSalesMap)
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5);
 
-    // Format recent transactions
     const recentTransactions = payments.slice(0, 10).map((payment: any) => ({
       id: payment.id,
       orderId: payment.orderId,
@@ -152,7 +282,6 @@ export async function GET(req: NextRequest) {
       date: payment.paidAt || payment.createdAt,
     }));
 
-    // Calculate growth vs previous month (based on current system date or latest active month)
     const currentMonth = new Date().getMonth();
     const currentMonthRevenue = monthlyIncome[currentMonth].revenue;
     const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
@@ -162,7 +291,7 @@ export async function GET(req: NextRequest) {
     if (prevMonthRevenue > 0) {
       monthlyGrowthPercentage = Math.round(((currentMonthRevenue - prevMonthRevenue) / prevMonthRevenue) * 100);
     } else if (currentMonthRevenue > 0) {
-      monthlyGrowthPercentage = 100; // 100% growth if prev month was 0 and this month has revenue
+      monthlyGrowthPercentage = 100;
     }
 
     return NextResponse.json({
@@ -186,6 +315,90 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Internal server error" }, { status: 500 });
   }
 }
+
+// Helper to generate daily demo data
+function generateDailyDemoData(year: number, month: number, daysInMonth: number) {
+  const isCurrentMonth = year === new Date().getFullYear() && month === new Date().getMonth();
+  const currentDay = new Date().getDate();
+
+  const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+  // Base daily revenues - realistic pattern with weekday peaks
+  const baseDailyRevenues = Array.from({ length: daysInMonth }, (_, i) => {
+    const dayOfWeek = new Date(year, month, i + 1).getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const base = isWeekend ? 3500000 : 2200000;
+    const variance = Math.random() * 1500000;
+    return Math.round(base + variance);
+  });
+
+  const dailyIncome = baseDailyRevenues.map((revenue, index) => {
+    const isFuture = isCurrentMonth && index + 1 > currentDay;
+    const isToday = isCurrentMonth && index + 1 === currentDay;
+    
+    return {
+      day: index + 1,
+      revenue: isFuture ? 0 : isToday ? Math.round(revenue * 0.6) : revenue,
+      ordersCount: isFuture ? 0 : isToday ? Math.round((revenue / 850000) * 0.6) : Math.round(revenue / 850000),
+    };
+  });
+
+  const activeDays = dailyIncome.filter(d => d.revenue > 0);
+  const totalRevenue = activeDays.reduce((sum, d) => sum + d.revenue, 0);
+  const totalOrders = activeDays.reduce((sum, d) => sum + d.ordersCount, 0);
+  const averageOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+
+  // Daily growth (today vs yesterday)
+  const todayRevenue = dailyIncome[currentDay - 1]?.revenue || 0;
+  const yesterdayRevenue = currentDay > 1 ? dailyIncome[currentDay - 2]?.revenue || 0 : 0;
+  
+  let dailyGrowthPercentage = 8;
+  if (yesterdayRevenue > 0) {
+    dailyGrowthPercentage = Math.round(((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 100);
+  }
+
+  const paymentMethods = [
+    { method: "TRANSFER", amount: Math.round(totalRevenue * 0.60), count: Math.round(totalOrders * 0.58), percentage: 60 },
+    { method: "CASH", amount: Math.round(totalRevenue * 0.25), count: Math.round(totalOrders * 0.28), percentage: 25 },
+    { method: "COD", amount: Math.round(totalRevenue * 0.15), count: Math.round(totalOrders * 0.14), percentage: 15 },
+  ];
+
+  const names = [
+    "Ahmad Fauzi", "Rian Hidayat", "Siti Aminah", "Budi Santoso", 
+    "Dewi Lestari", "Hendra Wijaya", "Indah Permata", "Roni Setiawan"
+  ];
+  
+  const recentTransactions = Array.from({ length: 6 }).map((_, idx) => {
+    const date = new Date(year, month, Math.max(1, currentDay - idx));
+    const amount = [1250000, 3200000, 850000, 4500000, 1800000, 2900000][idx % 6];
+    const method = ["TRANSFER", "TRANSFER", "CASH", "TRANSFER", "COD", "TRANSFER"][idx % 6];
+    
+    return {
+      id: 2000 + idx,
+      orderId: 600 + idx,
+      customerName: names[idx % names.length],
+      amount,
+      method,
+      status: "VERIFIED",
+      date: date.toISOString(),
+    };
+  });
+
+  return {
+    isDemoData: true,
+    year,
+    month,
+    monthName: monthNames[month],
+    totalRevenue,
+    totalOrders,
+    averageOrderValue,
+    dailyGrowthPercentage,
+    dailyIncome,
+    paymentMethods,
+    recentTransactions,
+  };
+}
+
 
 // Helper to generate beautifully realistic simulation data for demo mode
 function generateDemoData(year: number) {

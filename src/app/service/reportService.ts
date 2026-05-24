@@ -8,6 +8,12 @@ export interface MonthlyIncome {
   ordersCount: number;
 }
 
+export interface DailyIncome {
+  day: number;
+  revenue: number;
+  ordersCount: number;
+}
+
 export interface PaymentMethodStat {
   method: string;
   amount: number;
@@ -44,13 +50,37 @@ export interface ReportData {
   recentTransactions: RecentTransaction[];
 }
 
+export interface DailyReportData {
+  isDemoData: boolean;
+  year: number;
+  month: number;
+  monthName?: string;
+  totalRevenue: number;
+  totalOrders: number;
+  averageOrderValue: number;
+  dailyGrowthPercentage: number;
+  dailyIncome: DailyIncome[];
+  paymentMethods: PaymentMethodStat[];
+  recentTransactions: RecentTransaction[];
+}
+
 export const reportService = {
   getIncomeReport: async (year: number) => {
-    const res = await fetch(`/api/report?year=${year}`);
+    const res = await fetch(`/api/report?type=yearly&year=${year}`);
     const data = await res.json();
     return {
       success: res.ok,
       data: data.data as ReportData | undefined,
+      message: data.message as string,
+    };
+  },
+
+  getDailyReport: async (year: number, month: number) => {
+    const res = await fetch(`/api/report?type=daily&year=${year}&month=${month}`);
+    const data = await res.json();
+    return {
+      success: res.ok,
+      data: data.data as DailyReportData | undefined,
       message: data.message as string,
     };
   },

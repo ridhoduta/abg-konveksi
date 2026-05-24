@@ -31,17 +31,7 @@ export function KasirSidebar({ activePath }: { activePath: string }) {
             <span className="font-label-md text-label-md">Beranda</span>
           </Link>
           
-          <Link 
-            href="/pages/kasir/product" 
-            className={`flex items-center px-6 py-3 transition-colors ${
-              activePath === "product" 
-                ? "text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed bg-primary-container/10 dark:bg-primary-container/20" 
-                : "text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20"
-            }`}
-          >
-            <ShoppingBag className="w-5 h-5 mr-4" />
-            <span className="font-label-md text-label-md">Barang</span>
-          </Link>
+          
           <Link 
             href="/pages/kasir/order" 
             className={`flex items-center px-6 py-3 transition-colors ${
@@ -52,6 +42,17 @@ export function KasirSidebar({ activePath }: { activePath: string }) {
           >
             <Receipt className="w-5 h-5 mr-4" />
             <span className="font-label-md text-label-md">Pesanan</span>
+          </Link>
+          <Link 
+            href="/pages/kasir/report" 
+            className={`flex items-center px-6 py-3 transition-colors ${
+              activePath === "report" 
+                ? "text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed bg-primary-container/10 dark:bg-primary-container/20" 
+                : "text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-primary-container/10 dark:hover:bg-primary-container/20"
+            }`}
+          >
+            <ShoppingBag className="w-5 h-5 mr-4" />
+            <span className="font-label-md text-label-md">Report</span>
           </Link>
         </nav>
         
