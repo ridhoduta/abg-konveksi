@@ -50,7 +50,7 @@ export async function PUT(req: NextRequest, props: { params: Promise<{ id: strin
     }
 
     const body = await req.json();
-    const { status, note } = body;
+    const { status, note, tanggalKirim, tanggalDatang } = body;
 
     // Fetch the current order first to check if the status changed and to get customerId
     const oldOrder = await prisma.order.findUnique({
@@ -66,7 +66,9 @@ export async function PUT(req: NextRequest, props: { params: Promise<{ id: strin
       where: { id: Number(params.id) },
       data: {
         ...(status && { status }),
-        ...(note !== undefined && { note })
+        ...(note !== undefined && { note }),
+        ...(tanggalKirim !== undefined && { tanggalKirim: tanggalKirim ? new Date(tanggalKirim) : null }),
+        ...(tanggalDatang !== undefined && { tanggalDatang: tanggalDatang ? new Date(tanggalDatang) : null }),
       }
     });
 

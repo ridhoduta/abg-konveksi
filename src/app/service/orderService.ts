@@ -56,11 +56,17 @@ export const orderService = {
     return { success: res.ok, data: data.data, message: data.message };
   },
 
-  updateOrderStatus: async (id: number, status: string, note?: string) => {
+  updateOrderStatus: async (
+    id: number,
+    status: string,
+    note?: string,
+    tanggalKirim?: string | null,
+    tanggalDatang?: string | null
+  ) => {
     const res = await fetch(`/api/order/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status, note })
+      body: JSON.stringify({ status, note, tanggalKirim, tanggalDatang })
     });
     const data = await res.json();
     return { success: res.ok, data: data.data, message: data.message };

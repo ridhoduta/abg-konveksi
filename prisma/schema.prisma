@@ -128,6 +128,8 @@ model Order {
 
   status        String @default("PENDING")
   paymentStatus String @default("UNPAID")
+  tanggalKirim  DateTime?
+  tanggalDatang DateTime?
 
   total Int
   note  String?

@@ -19,6 +19,8 @@ export default function OrderDetailPage() {
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("");
+  const [tanggalKirim, setTanggalKirim] = useState("");
+  const [tanggalDatang, setTanggalDatang] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -41,6 +43,16 @@ export default function OrderDetailPage() {
       if (res.success) {
         setOrder(res.data);
         setStatus(res.data.status);
+        setTanggalKirim(
+          res.data.tanggalKirim
+            ? new Date(res.data.tanggalKirim).toISOString().slice(0, 10)
+            : ""
+        );
+        setTanggalDatang(
+          res.data.tanggalDatang
+            ? new Date(res.data.tanggalDatang).toISOString().slice(0, 10)
+            : ""
+        );
       }
       setLoading(false);
     };
@@ -49,10 +61,21 @@ export default function OrderDetailPage() {
 
   const handleUpdateStatus = async () => {
     setSaving(true);
-    const res = await orderService.updateOrderStatus(id, status);
+    const res = await orderService.updateOrderStatus(
+      id,
+      status,
+      undefined,
+      status === "SHIPPED" ? (tanggalKirim || null) : undefined,
+      status === "SHIPPED" ? (tanggalDatang || null) : undefined
+    );
     if (res.success) {
       alert("Status berhasil diperbarui");
-      setOrder({ ...order, status });
+      setOrder({
+        ...order,
+        status,
+        tanggalKirim: status === "SHIPPED" && tanggalKirim ? tanggalKirim : order.tanggalKirim,
+        tanggalDatang: status === "SHIPPED" && tanggalDatang ? tanggalDatang : order.tanggalDatang,
+      });
     } else {
       alert("Gagal memperbarui status");
     }
@@ -122,6 +145,31 @@ export default function OrderDetailPage() {
               <option value="DONE">SELESAI</option>
               <option value="CANCELLED">BATAL</option>
             </select>
+
+            {status === "SHIPPED" && (
+              <div className="flex items-center gap-3 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2">
+                <div className="flex flex-col gap-1">
+                  <label className="font-label-sm text-on-surface-variant text-xs">Tanggal Kirim</label>
+                  <input
+                    type="date"
+                    value={tanggalKirim}
+                    onChange={(e) => setTanggalKirim(e.target.value)}
+                    className="bg-transparent outline-none font-body-sm text-on-surface border-b border-outline-variant focus:border-primary transition-colors"
+                  />
+                </div>
+                <div className="w-px h-8 bg-outline-variant" />
+                <div className="flex flex-col gap-1">
+                  <label className="font-label-sm text-on-surface-variant text-xs">Estimasi Datang</label>
+                  <input
+                    type="date"
+                    value={tanggalDatang}
+                    onChange={(e) => setTanggalDatang(e.target.value)}
+                    className="bg-transparent outline-none font-body-sm text-on-surface border-b border-outline-variant focus:border-primary transition-colors"
+                  />
+                </div>
+              </div>
+            )}
+
             <button 
               onClick={handleUpdateStatus}
               disabled={saving || status === order.status}
@@ -254,6 +302,18 @@ export default function OrderDetailPage() {
                   <p className="font-label-sm text-on-surface-variant">Dibuat Pada</p>
                   <p className="font-body-md">{new Date(order.createdAt).toLocaleString("id-ID")}</p>
                 </div>
+                {order.tanggalKirim && (
+                  <div>
+                    <p className="font-label-sm text-on-surface-variant">Tanggal Kirim</p>
+                    <p className="font-body-md">{new Date(order.tanggalKirim).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</p>
+                  </div>
+                )}
+                {order.tanggalDatang && (
+                  <div>
+                    <p className="font-label-sm text-on-surface-variant">Estimasi Datang</p>
+                    <p className="font-body-md">{new Date(order.tanggalDatang).toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" })}</p>
+                  </div>
+                )}
                 <div>
                   <p className="font-label-sm text-on-surface-variant">Kasir / Admin</p>
                   <p className="font-body-md">{order.createdBy ? order.createdBy.username : "-"}</p>
