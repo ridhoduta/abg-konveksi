@@ -6,7 +6,7 @@ import { getSession } from "@/lib/session";
  * PUT /api/address/[id]
  * Update a specific address.
  */
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getSession();
     if (!session || session.role.toUpperCase() !== "CUSTOMER") {
@@ -16,7 +16,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       );
     }
 
-    const addressId = Number(params.id);
+    const { id } = await params;
+    const addressId = Number(id);
     if (isNaN(addressId)) {
       return NextResponse.json({ message: "ID alamat tidak valid." }, { status: 400 });
     }
@@ -87,7 +88,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
  * DELETE /api/address/[id]
  * Delete a specific address.
  */
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getSession();
     if (!session || session.role.toUpperCase() !== "CUSTOMER") {
@@ -97,7 +98,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       );
     }
 
-    const addressId = Number(params.id);
+    const { id } = await params;
+    const addressId = Number(id);
     if (isNaN(addressId)) {
       return NextResponse.json({ message: "ID alamat tidak valid." }, { status: 400 });
     }
