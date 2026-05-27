@@ -117,16 +117,18 @@ export function useProduct() {
   };
 
   const deleteProduct = async (id: number) => {
+    setError(null);
     try {
       const res = await fetch(`/api/product/${id}`, {
         method: "DELETE",
       });
+      const data = await res.json();
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || "Failed to delete product");
       }
       await fetchProducts();
     } catch (err: any) {
+      setError(err.message);
       throw err;
     }
   };

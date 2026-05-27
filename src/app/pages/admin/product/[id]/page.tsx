@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { useProduct } from "@/app/pages/hooks/useProduct";
-import { ArrowLeft, Pencil, PlusCircle, Trash2, X, Lightbulb } from "lucide-react";
+import { ArrowLeft, Pencil, PlusCircle, Trash2, X, Lightbulb, UploadCloud, Loader2 } from "lucide-react";
 
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -24,6 +24,70 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
   const [newSizeName, setNewSizeName] = useState("");
   const [isAddingSize, setIsAddingSize] = useState(false);
+
+  // States for Supabase Image Upload
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleSelectFile = (file: File) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    if (!allowedTypes.includes(file.type)) {
+      setUploadError("Hanya file gambar (JPG, PNG, WEBP) yang diperbolehkan");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("Ukuran file maksimal adalah 5MB");
+      return;
+    }
+
+    setUploadError(null);
+    setSelectedFile(file);
+    
+    // Revoke previous blob if any to prevent memory leaks
+    if (previewUrl && previewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleSelectFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      handleSelectFile(e.target.files[0]);
+    }
+  };
+
+  const handleClearImage = () => {
+    setImage("");
+    setSelectedFile(null);
+    if (previewUrl && previewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    setPreviewUrl("");
+  };
 
   useEffect(() => {
     fetchSizes();
@@ -128,10 +192,35 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     
     try {
       setIsSubmitting(true);
+      let finalImageUrl = image;
+
+      if (selectedFile) {
+        setIsUploading(true);
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const uploadData = await uploadRes.json();
+        if (!uploadRes.ok) {
+          throw new Error(uploadData.message || "Gagal mengunggah file ke Supabase");
+        }
+
+        if (uploadData.success && uploadData.url?.publicUrl) {
+          finalImageUrl = uploadData.url.publicUrl;
+          setImage(finalImageUrl);
+        } else {
+          throw new Error("Format respon upload tidak valid");
+        }
+      }
+
       await updateProduct(parseInt(id), {
         name,
         description,
-        image,
+        image: finalImageUrl,
         categoryId: Number(categoryId),
         variants
       });
@@ -139,6 +228,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     } catch (err: any) {
       alert(err.message || "Failed to update product");
     } finally {
+      setIsUploading(false);
       setIsSubmitting(false);
     }
   };
@@ -322,11 +412,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     Discard
                   </button>
                   <button 
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isUploading}
                     className="px-8 py-3 bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all disabled:opacity-50" 
                     type="submit"
                   >
-                    {isSubmitting ? "Saving..." : "Save Product"}
+                    {isUploading ? "Uploading Image..." : isSubmitting ? "Saving..." : "Save Product"}
                   </button>
                 </div>
               </form>
@@ -338,25 +428,90 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 <label className="font-label-md text-label-md text-on-surface block mb-base">Product Images</label>
                 
                 <div className="space-y-4">
-                  <div className="space-y-base">
-                    <label className="text-sm text-on-surface-variant">Image URL</label>
-                    <input 
-                      type="url"
-                      value={image}
-                      onChange={(e) => setImage(e.target.value)}
-                      placeholder="https://example.com/image.jpg"
-                      className="w-full px-4 py-2 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 outline-none"
+                  {/* Drag and Drop Zone */}
+                  <div 
+                    className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-300 ${
+                      dragActive 
+                        ? "border-primary bg-primary/5 scale-[1.01]" 
+                        : "border-outline-variant hover:border-primary/50 hover:bg-surface-container-low"
+                    } relative`}
+                    onDragEnter={handleDrag}
+                    onDragOver={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDrop={handleDrop}
+                  >
+                    <input
+                      type="file"
+                      id="image-upload"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                      disabled={isUploading || isSubmitting}
                     />
+                    {isUploading ? (
+                      <div className="flex flex-col items-center gap-2 py-4">
+                        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                        <span className="text-sm font-medium text-on-surface">Uploading to Supabase...</span>
+                      </div>
+                    ) : (previewUrl || image) ? (
+                      <div className="aspect-square w-full rounded-lg overflow-hidden relative group">
+                        <img alt="Thumbnail" className="w-full h-full object-cover" src={previewUrl || image} />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
+                          <span className="text-xs bg-black/60 px-3 py-1.5 rounded-full font-label-md">Ganti Gambar</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center text-center space-y-2 py-4">
+                        <div className="p-3 bg-primary/10 text-primary rounded-full">
+                          <UploadCloud className="w-8 h-8" />
+                        </div>
+                        <span className="text-sm font-semibold text-on-surface">Unggah gambar produk</span>
+                        <span className="text-xs text-on-surface-variant">PNG, JPG, WEBP maks 5MB</span>
+                      </div>
+                    )}
                   </div>
-                  
-                  {image && (
-                    <div className="aspect-square rounded-lg border border-outline-variant bg-surface overflow-hidden relative group">
-                      <img alt="Thumbnail" className="w-full h-full object-cover" src={image} />
-                      <button onClick={(e) => { e.preventDefault(); setImage(""); }} className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
-                        <X className="w-[18px] h-[18px]" />
+
+                  {uploadError && (
+                    <div className="text-xs font-semibold text-error bg-error-container/20 p-3 rounded-lg border border-error/20 flex justify-between items-center">
+                      <span>{uploadError}</span>
+                      <button 
+                        onClick={() => setUploadError(null)}
+                        className="p-1 hover:bg-error-container/40 rounded-full"
+                      >
+                        <X className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   )}
+
+                  {/* Manual URL Fallback */}
+                  <div className="pt-2 border-t border-outline-variant space-y-base">
+                    <label className="text-xs font-medium text-on-surface-variant">Atau gunakan URL Gambar manual</label>
+                    <input 
+                      type="url"
+                      value={image}
+                      onChange={(e) => {
+                        setImage(e.target.value);
+                        if (selectedFile) {
+                          setSelectedFile(null);
+                          if (previewUrl && previewUrl.startsWith("blob:")) {
+                            URL.revokeObjectURL(previewUrl);
+                          }
+                          setPreviewUrl("");
+                        }
+                      }}
+                      placeholder="https://example.com/image.jpg"
+                      className="w-full px-4 py-2 text-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    />
+                    {(previewUrl || image) && (
+                      <button 
+                        type="button" 
+                        onClick={handleClearImage}
+                        className="text-xs font-medium text-error hover:underline flex items-center gap-1"
+                      >
+                        Hapus Gambar
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="bg-primary-container/10 rounded-xl p-lg border border-primary/20">

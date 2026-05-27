@@ -14,6 +14,14 @@ export default function ProductListPage() {
     fetchProducts();
   }, [fetchProducts]);
 
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteProduct(id);
+    } catch (err: any) {
+      alert(err.message || "Failed to delete product");
+    }
+  };
+
   return (
     <main className="flex-1 p-xl overflow-y-auto ml-72">
         <header className="flex justify-between items-center mb-xl bg-surface-container-lowest p-lg border border-outline-variant rounded-sm shadow-sm">
@@ -38,14 +46,6 @@ export default function ProductListPage() {
         <section className="bg-surface-container-lowest rounded-xl custom-shadow border border-outline-variant overflow-hidden">
           <div className="p-lg flex justify-between items-center bg-surface-container-low/50 border-b border-outline-variant">
             <h3 className="headline-md text-on-surface">Product Inventory</h3>
-            <div className="flex gap-3">
-              <button className="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">
-                <Filter className="w-[18px] h-[18px]" /> Filter
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">
-                <Download className="w-[18px] h-[18px]" /> Export
-              </button>
-            </div>
           </div>
           
           {loading ? (
@@ -53,7 +53,7 @@ export default function ProductListPage() {
               <div className="spinner !border-primary !border-t-transparent w-8 h-8 rounded-full border-4"></div>
             </div>
           ) : (
-            <ProductTable products={products} onDelete={deleteProduct} />
+            <ProductTable products={products} onDelete={handleDelete} />
           )}
         </section>
       </main>

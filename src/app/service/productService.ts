@@ -140,26 +140,59 @@ export const productService = {
   ) {
     const { variants, ...productData } = data;
 
-    // If variants are provided, we'll replace the existing variants with the new ones.
+    // If variants are provided, we'll update them safely using merge/upsert.
     if (variants) {
-      return await prisma.$transaction(async (tx:any) => {
-        // Delete all existing variants
-        await tx.productVariant.deleteMany({
+      return await prisma.$transaction(async (tx: any) => {
+        // 1. Get all current variants for the product
+        const currentVariants = await tx.productVariant.findMany({
           where: { productId: id },
+          include: { size: true },
         });
 
-        // Update product and create new variants
+        const incomingSizeIds = variants.map((v) => v.sizeId);
+
+        // 2. Identify variants to delete (those in current but not in incoming)
+        const variantsToDelete = currentVariants.filter(
+          (cv) => !incomingSizeIds.includes(cv.sizeId)
+        );
+
+        // Delete the ones that need to be deleted, checking if referenced in OrderItem
+        for (const v of variantsToDelete) {
+          const orderItemCount = await tx.orderItem.count({
+            where: { variantId: v.id },
+          });
+          if (orderItemCount > 0) {
+            throw new Error(`Ukuran ${v.size?.name || ""} tidak dapat dihapus karena sudah memiliki riwayat pemesanan/transaksi.`);
+          }
+          await tx.productVariant.delete({
+            where: { id: v.id },
+          });
+        }
+
+        // 3. Upsert the incoming variants
+        for (const v of variants) {
+          await tx.productVariant.upsert({
+            where: {
+              productId_sizeId: {
+                productId: id,
+                sizeId: v.sizeId,
+              },
+            },
+            update: {
+              price: v.price,
+            },
+            create: {
+              productId: id,
+              sizeId: v.sizeId,
+              price: v.price,
+            },
+          });
+        }
+
+        // 4. Finally, update the product fields
         return await tx.product.update({
           where: { id },
-          data: {
-            ...productData,
-            variants: {
-              create: variants.map((v) => ({
-                sizeId: v.sizeId,
-                price: v.price,
-              })),
-            },
-          },
+          data: productData,
           include: {
             category: true,
             variants: {
@@ -187,6 +220,19 @@ export const productService = {
   },
 
   async deleteProduct(id: number) {
+    // Check if any variant of this product is referenced in OrderItem
+    const orderItemsCount = await prisma.orderItem.count({
+      where: {
+        variant: {
+          productId: id,
+        },
+      },
+    });
+
+    if (orderItemsCount > 0) {
+      throw new Error("Produk tidak dapat dihapus karena sudah memiliki riwayat transaksi/pesanan.");
+    }
+
     return await prisma.product.delete({
       where: { id },
     });

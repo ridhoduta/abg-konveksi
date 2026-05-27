@@ -38,9 +38,9 @@ export async function PUT(
     const body = await request.json();
     const product = await productService.updateProduct(id, body);
     return NextResponse.json(product);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to update product:", error);
-    return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to update product" }, { status: 500 });
   }
 }
 
@@ -57,8 +57,8 @@ export async function DELETE(
 
     await productService.deleteProduct(id);
     return NextResponse.json({ message: "Product deleted successfully" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to delete product:", error);
-    return NextResponse.json({ error: "Failed to delete product" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to delete product" }, { status: 500 });
   }
 }

@@ -13,11 +13,7 @@ export default function AdminLayout({
   // Determine activePath dynamically from the current pathname
   let activePath = "dashboard";
   if (pathname.startsWith("/pages/admin/product")) {
-    if (pathname === "/pages/admin/product") {
-      activePath = "produk";
-    } else {
-      activePath = "inventory";
-    }
+    activePath = "produk";
   } else if (pathname.startsWith("/pages/admin/order")) {
     activePath = "pesanan";
   } else if (pathname.startsWith("/pages/admin/user")) {
