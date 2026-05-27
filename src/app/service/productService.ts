@@ -153,7 +153,7 @@ export const productService = {
 
         // 2. Identify variants to delete (those in current but not in incoming)
         const variantsToDelete = currentVariants.filter(
-          (cv) => !incomingSizeIds.includes(cv.sizeId)
+          (cv:any) => !incomingSizeIds.includes(cv.sizeId)
         );
 
         // Delete the ones that need to be deleted, checking if referenced in OrderItem
