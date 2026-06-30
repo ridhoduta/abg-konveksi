@@ -60,7 +60,7 @@
   --surface-variant: #dae2fd;
 }
 
-@theme inline {
+@theme {
   --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   
   /* Map CSS Variables to Tailwind Theme */
@@ -100,21 +100,6 @@
   --color-on-background: var(--on-background);
   --color-outline: var(--outline);
   --color-outline-variant: var(--outline-variant);
-
-  /* Radius */
-  --radius-sm: 0.125rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-full: 9999px;
-
-  /* Spacing */
-  --spacing-xs: 4px;
-  --spacing-base: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 40px;
 }
 
 /* Typography Base Styles */
@@ -122,11 +107,12 @@
   body {
     background-color: var(--background);
     color: var(--on-background);
-    font-family: var(--font-sans);
+    font-family: var(--font-plus-jakarta), sans-serif;
     @apply antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-manrope), sans-serif;
     @apply font-bold tracking-tight;
   }
 }
@@ -190,28 +176,57 @@
 
 /* Component Design System Rules */
 @utility input-field {
-  @apply bg-surface-container-lowest border border-outline-variant rounded-md px-md py-xs outline-none transition-all;
+  @apply bg-surface-container-lowest border border-outline-variant rounded-md px-4 py-1 outline-none transition-all;
   &:focus {
     @apply border-primary ring-2 ring-primary/15;
   }
 }
 
 @utility btn-primary {
-  @apply bg-primary text-on-primary px-lg py-sm rounded-md font-semibold transition-all hover:bg-primary-container active:translate-y-px;
+  @apply bg-primary text-on-primary px-6 py-3 rounded-md font-semibold transition-all hover:bg-primary-container active:translate-y-px;
 }
 
 @utility btn-secondary {
-  @apply bg-secondary text-on-secondary px-lg py-sm rounded-md font-semibold transition-all hover:bg-secondary-container active:translate-y-px;
+  @apply bg-secondary text-on-secondary px-6 py-3 rounded-md font-semibold transition-all hover:bg-secondary-container active:translate-y-px;
 }
 
 @utility btn-success {
-  @apply bg-tertiary text-on-tertiary px-lg py-sm rounded-md font-semibold transition-all hover:bg-tertiary-container active:translate-y-px;
+  @apply bg-tertiary text-on-tertiary px-6 py-3 rounded-md font-semibold transition-all hover:bg-tertiary-container active:translate-y-px;
 }
 
 @utility status-chip {
-  @apply px-sm py-xs rounded-full text-xs font-bold;
+  @apply px-3 py-1 rounded-full text-xs font-bold;
 }
 
 @utility card-pos {
   @apply bg-white border border-outline-variant rounded-lg overflow-hidden transition-all hover:shadow-md;
+}
+
+/* Custom Animations and Styles from reference.html */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: 200%;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 4s ease-in-out infinite;
+}
+
+.signature-gradient {
+  background-image: linear-gradient(135deg, #003aa0 0%, #712ae2 100%);
+}
+
+.ambient-shadow {
+  box-shadow: 0 32px 64px -12px rgba(26, 27, 34, 0.06);
 }

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kasir UMKM - Digital Concierge for Business Growth</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#712ae2",
+                    "on-tertiary-fixed-variant": "#004c6e",
+                    "on-primary-container": "#c4d1ff",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#004fd2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#004768",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#eaddff",
+                    "on-secondary-fixed-variant": "#5a00c6",
+                    "surface-container-high": "#e9e7f0",
+                    "background": "#fbf8ff",
+                    "on-tertiary-fixed": "#001e2f",
+                    "on-secondary-fixed": "#25005a",
+                    "on-background": "#1a1b22",
+                    "on-primary-fixed": "#00174b",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#454652",
+                    "surface-dim": "#dbd9e2",
+                    "on-secondary-container": "#fffbff",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-low": "#f4f2fc",
+                    "primary-fixed": "#dbe1ff",
+                    "tertiary-fixed-dim": "#89ceff",
+                    "on-surface": "#1a1b22",
+                    "surface-variant": "#e3e1ea",
+                    "surface-tint": "#0053db",
+                    "outline-variant": "#c5c5d4",
+                    "surface-container-highest": "#e3e1ea",
+                    "secondary-container": "#8a4cfc",
+                    "outline": "#757684",
+                    "primary": "#003aa0",
+                    "inverse-on-surface": "#f2eff9",
+                    "surface-bright": "#fbf8ff",
+                    "inverse-surface": "#2f3037",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "secondary-fixed-dim": "#d2bbff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface": "#fbf8ff",
+                    "on-tertiary-container": "#a5d8ff",
+                    "tertiary-fixed": "#c9e6ff",
+                    "surface-container": "#efedf6",
+                    "tertiary-container": "#00608a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": [
+                            "Manrope"
+                    ],
+                    "body": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label": [
+                            "Plus Jakarta Sans"
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ambient-shadow {
+            box-shadow: 0 32px 64px -12px rgba(26, 27, 34, 0.06);
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #003aa0 0%, #712ae2 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed">
+<!-- TopNavBar -->
+<nav class="bg-surface/70 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-extrabold tracking-tight text-indigo-900">Kasir UMKM</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-indigo-600 font-semibold border-b-2 border-indigo-600 transition-all duration-300" href="#">Fitur</a>
+<a class="text-slate-600 hover:text-indigo-500 transition-all duration-300" href="#">Manfaat</a>
+<a class="text-slate-600 hover:text-indigo-500 transition-all duration-300" href="#">Harga</a>
+<a class="text-slate-600 hover:text-indigo-500 transition-all duration-300" href="#">Tentang Kami</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-slate-600 font-medium hover:opacity-80 transition-all">Masuk</button>
+<button class="px-6 py-2.5 signature-gradient text-white rounded-full font-bold scale-105 transition-transform hover:opacity-90">Daftar Sekarang</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-20 pb-32 overflow-hidden">
+<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-fixed text-on-primary-fixed text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+                    Aplikasi Kasir No. 1 di Indonesia
+                </div>
+<h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight text-on-surface leading-[1.1]">
+                    Kelola Bisnis UMKM <span class="text-transparent bg-clip-text signature-gradient">Lebih Mudah</span> &amp; Cepat
+                </h1>
+<p class="text-xl text-on-surface-variant max-w-lg leading-relaxed">
+                    Pantau stok, transaksi, dan laporan dalam satu sistem kasir modern yang dirancang khusus untuk pertumbuhan bisnis Anda.
+                </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="px-8 py-4 signature-gradient text-white rounded-full font-bold text-lg hover:scale-105 transition-transform ambient-shadow">
+                        Mulai Sekarang
+                    </button>
+<button class="px-8 py-4 border-2 border-outline-variant text-on-surface rounded-full font-bold text-lg hover:bg-surface-container-low transition-all">
+                        Buka Dashboard
+                    </button>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -top-20 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 ambient-shadow rounded-xl overflow-hidden transform lg:rotate-2 hover:rotate-0 transition-transform duration-700">
+<img class="w-full h-auto" data-alt="Modern point of sale dashboard interface showing sales charts, product inventory, and recent transaction history on a sleek professional tablet" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF7uLtmNhy8kyv5U85K1sGZeomJ530f6sgke21nOs_lkyEvWHYS6cnB9PgIKnbXKekNCnbcetm8MelvU-OLEvhpjLUd4WWlvDy6W1sS0htl_BrVwKc3irzUK9Yl68Uk5Qn7KUelAGcPsal08-LjJry77xS7X0ZmA_inQ9TbRfX838Wl_tdCX0OQ3Mr9-rrO6NsiPkftHJ52t6Aa4lJUVr71pCmvpCG2HmGLFZxnvQAKJgE1WQacqESrHPynnWS8fWnCETfvFS0L9U"/>
+</div>
+<!-- Floating Card -->
+<div class="absolute -bottom-10 -left-10 z-20 bg-white p-6 rounded-2xl shadow-2xl flex items-center gap-4 animate-bounce-slow">
+<div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Revenue Today</p>
+<p class="text-xl font-extrabold text-slate-900">+Rp 12.450.000</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust Section -->
+<section class="py-12 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-8">
+<p class="text-center text-sm font-bold text-slate-400 uppercase tracking-[0.2em] mb-8">Dipercaya Oleh 10,000+ UMKM di Seluruh Indonesia</p>
+<div class="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+<div class="h-8 w-32 bg-slate-400 rounded-md"></div>
+<div class="h-8 w-32 bg-slate-400 rounded-md"></div>
+<div class="h-8 w-32 bg-slate-400 rounded-md"></div>
+<div class="h-8 w-32 bg-slate-400 rounded-md"></div>
+<div class="h-8 w-32 bg-slate-400 rounded-md"></div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-32 px-8">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20 space-y-4">
+<h2 class="text-4xl font-extrabold text-on-surface">Fitur Cerdas untuk Bisnis Modern</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto text-lg">Semua yang Anda butuhkan untuk mendigitalisasi operasional harian tanpa hambatan teknis.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Bento Grid Style Feature Cards -->
+<div class="p-10 rounded-[2rem] bg-surface-container-low border border-outline-variant/10 hover:bg-surface-container-lowest transition-colors group">
+<div class="w-14 h-14 rounded-2xl bg-primary-fixed flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">inventory_2</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Manajemen Stok</h3>
+<p class="text-on-surface-variant leading-relaxed">Pantau ketersediaan barang secara real-time dengan notifikasi otomatis saat stok menipis.</p>
+</div>
+<div class="p-10 rounded-[2rem] bg-surface-container-low border border-outline-variant/10 hover:bg-surface-container-lowest transition-colors group">
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-3xl">analytics</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Laporan Penjualan</h3>
+<p class="text-on-surface-variant leading-relaxed">Analisis performa bisnis harian, mingguan, hingga bulanan dengan visualisasi data yang intuitif.</p>
+</div>
+<div class="p-10 rounded-[2rem] bg-surface-container-low border border-outline-variant/10 hover:bg-surface-container-lowest transition-colors group">
+<div class="w-14 h-14 rounded-2xl bg-primary-fixed flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">touch_app</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Mudah Digunakan</h3>
+<p class="text-on-surface-variant leading-relaxed">Antarmuka yang bersih dan ramah pengguna, bahkan untuk staf yang baru pertama kali menggunakan sistem kasir.</p>
+</div>
+<div class="md:col-span-2 p-10 rounded-[2rem] bg-indigo-900 text-white relative overflow-hidden group">
+<div class="relative z-10 max-w-md">
+<div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-white text-3xl">payments</span>
+</div>
+<h3 class="text-3xl font-bold mb-4">Multi Pembayaran</h3>
+<p class="text-indigo-200 text-lg leading-relaxed">Terima berbagai metode pembayaran mulai dari Tunai, QRIS, E-Wallet (OVO, Dana, GoPay), hingga Transfer Bank.</p>
+</div>
+<div class="absolute right-[-5%] bottom-[-10%] w-1/2 opacity-20 group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-[15rem]">credit_card</span>
+</div>
+</div>
+<div class="p-10 rounded-[2rem] bg-surface-container-low border border-outline-variant/10 hover:bg-surface-container-lowest transition-colors group">
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-3xl">speed</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Dashboard Real-time</h3>
+<p class="text-on-surface-variant leading-relaxed">Akses data bisnis Anda kapan saja dan di mana saja secara langsung dari smartphone Anda.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- App Preview Section -->
+<section class="py-32 bg-slate-900 text-white overflow-hidden">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+<div>
+<h2 class="text-4xl lg:text-5xl font-extrabold mb-8 leading-tight">Pengalaman POS Modern di Semua Perangkat</h2>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<p class="text-indigo-100">Sinkronisasi otomatis antara aplikasi mobile dan dashboard desktop.</p>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<p class="text-indigo-100">Bekerja secara offline dan data akan tersinkron saat kembali online.</p>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm">check</span>
+</div>
+<p class="text-indigo-100">Keamanan data enkripsi standar bank untuk melindungi privasi Anda.</p>
+</div>
+</div>
+</div>
+<div class="relative flex justify-center items-center">
+<div class="relative z-20 w-full max-w-md ambient-shadow rounded-2xl border-8 border-slate-800 overflow-hidden">
+<img class="w-full h-auto" data-alt="Close-up of a mobile smartphone showing a minimalist point of sale application with bright buttons and clear sales analytics" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBAq6tar0zn7dfI1mUNpOsI0bjCWee8csbNcxJ7perwXOZl0GNMpGPcADSY1vTUXEnup1UHGOLEFleEYskRde-P73jRMQe0vDxydglhUsOkco_rwa1lWhXBbnRC22s4J7UZlnKjob014UY_ClWOUfvjVYn6jJgQ0aN6ideYQYedYFfHOcdRMcEZggvgqt-aqJbRhZ7OZ-3nIdU9Y9m96_aHOKn4jP5Q-WSxxiN-n4nCYyvppLVDdhQx8xPZiN-uTLp6nRTY8FhDmE"/>
+</div>
+<div class="absolute -right-20 -top-10 z-10 w-full hidden lg:block opacity-40">
+<img class="rounded-xl shadow-2xl" data-alt="Wide shot of a professional desktop computer monitor displaying a comprehensive business management dashboard with charts and tables" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGuHMu1_wmKdvgDlBLfs-dVMj5F9-iH-m5q06JfG8rr15DRS0pDH5vSPirW5O_Wdo9X59CXTneYrlNr34-vAOVm3rSJMudSnbt_UP7VlU-9oTBrF4haPnYevI8193SLk6Xumy9Ffa7ATizvr0XsxXbdDa5f4g2f3YyN3CSFyr5krZgE96GEn41hBpnjucWg6EGgUba8VLKEhL8-qkco2vtYMLCJ_k7MyO5A-mDl9T0M8XrdDKV2vmN_oVyqS8z7JDsGGobz9K_82s"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Revenue Ribbon (Custom Component) -->
+<div class="bg-surface-container-low py-10 overflow-hidden whitespace-nowrap">
+<div class="flex gap-6 animate-marquee">
+<div class="inline-flex items-center gap-3 px-6 py-3 bg-surface-container-lowest rounded-full shadow-sm">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="font-bold">Kedai Kopi ABC</span>
+<span class="text-slate-400 font-medium">+Rp 120.000</span>
+<span class="text-xs text-slate-300">2 min ago</span>
+</div>
+<div class="inline-flex items-center gap-3 px-6 py-3 bg-surface-container-lowest rounded-full shadow-sm">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="font-bold">Butik Fashion Z</span>
+<span class="text-slate-400 font-medium">+Rp 545.000</span>
+<span class="text-xs text-slate-300">5 min ago</span>
+</div>
+<div class="inline-flex items-center gap-3 px-6 py-3 bg-surface-container-lowest rounded-full shadow-sm">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="font-bold">Bengkel Maju</span>
+<span class="text-slate-400 font-medium">+Rp 2.100.000</span>
+<span class="text-xs text-slate-300">12 min ago</span>
+</div>
+<div class="inline-flex items-center gap-3 px-6 py-3 bg-surface-container-lowest rounded-full shadow-sm">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="font-bold">Warung Makan Ibu</span>
+<span class="text-slate-400 font-medium">+Rp 45.000</span>
+<span class="text-xs text-slate-300">15 min ago</span>
+</div>
+<!-- Duplicated for smooth loop -->
+<div class="inline-flex items-center gap-3 px-6 py-3 bg-surface-container-lowest rounded-full shadow-sm">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="font-bold">Kedai Kopi ABC</span>
+<span class="text-slate-400 font-medium">+Rp 120.000</span>
+<span class="text-xs text-slate-300">2 min ago</span>
+</div>
+</div>
+</div>
+<!-- Benefits Section -->
+<section class="py-32 px-8">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="space-y-4">
+<h4 class="text-xl font-extrabold flex items-center gap-3">
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">1</span>
+                    Tanpa Ribet Setup
+                </h4>
+<p class="text-on-surface-variant">Langsung pakai dalam 5 menit. Tidak perlu instalasi hardware yang rumit.</p>
+</div>
+<div class="space-y-4">
+<h4 class="text-xl font-extrabold flex items-center gap-3">
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">2</span>
+                    Multi Device
+                </h4>
+<p class="text-on-surface-variant">Bisa diakses dari HP, Tablet, maupun Laptop dengan pengalaman yang sama baiknya.</p>
+</div>
+<div class="space-y-4">
+<h4 class="text-xl font-extrabold flex items-center gap-3">
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">3</span>
+                    Data Aman di Cloud
+                </h4>
+<p class="text-on-surface-variant">Tak perlu takut kehilangan data. Semua tersimpan aman di server cloud kami.</p>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-20 px-8">
+<div class="max-w-5xl mx-auto signature-gradient rounded-[3rem] p-16 text-center text-white relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+<div class="relative z-10">
+<h2 class="text-4xl md:text-5xl font-extrabold mb-6">Mulai Digitalisasi Bisnis Anda Sekarang</h2>
+<p class="text-xl text-indigo-100 mb-10 max-w-2xl mx-auto">Gabung dengan ribuan pengusaha lainnya yang sudah naik kelas bersama Kasir UMKM.</p>
+<button class="px-10 py-5 bg-white text-primary rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-2xl">
+                    Coba Gratis Sekarang
+                </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-slate-50 border-t border-slate-100">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-7xl mx-auto">
+<div class="mb-8 md:mb-0 space-y-2">
+<div class="font-manrope font-bold text-lg text-slate-900">Kasir UMKM</div>
+<p class="text-slate-500 text-sm max-w-xs">© 2024 Kasir UMKM. Digital Concierge for Business Growth.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-slate-500 hover:text-indigo-500 text-sm font-plus-jakarta transition-all hover:underline" href="#">Home</a>
+<a class="text-slate-500 hover:text-indigo-500 text-sm font-plus-jakarta transition-all hover:underline" href="#">Features</a>
+<a class="text-slate-500 hover:text-indigo-500 text-sm font-plus-jakarta transition-all hover:underline" href="#">Contact</a>
+<a class="text-slate-500 hover:text-indigo-500 text-sm font-plus-jakarta transition-all hover:underline" href="#">Kebijakan Privasi</a>
+<a class="text-slate-500 hover:text-indigo-500 text-sm font-plus-jakarta transition-all hover:underline" href="#">Syarat &amp; Ketentuan</a>
+</div>
+</div>
+</footer>
+<style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 4s ease-in-out infinite;
+        }
+    </style>
+</body></html>
