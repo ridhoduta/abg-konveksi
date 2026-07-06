@@ -60,7 +60,7 @@ export default function KasirPage() {
     <>
 
       {/* TopNavBar */}
-      <header className="bg-surface dark:bg-white-120 flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
+      <header className="bg-surface dark:bg-surface-container-low flex justify-between items-center h-16 w-full pl-80 pr-margin-desktop fixed top-0 border-b border-outline-variant dark:border-outline z-40">
         <div className="flex items-center gap-6">
           <div className="relative w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant w-5 h-5" />

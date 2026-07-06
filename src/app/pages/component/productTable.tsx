@@ -104,7 +104,7 @@ export function ProductTable({ products, onDelete }: { products: Product[], onDe
                     {product.category?.name || "Uncategorized"}
                   </span>
                 </td>
-                <td className="px-6 py-4 font-body-sm text-on-surface-variant max-w-xs truncate">
+                <td className="px-6 py-4 font-body-sm text-on-surface-variant max-w-[20rem] truncate">
                   {product.description || "-"}
                 </td>
                 <td className="px-6 py-4">

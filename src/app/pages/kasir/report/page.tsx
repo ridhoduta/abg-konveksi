@@ -555,7 +555,7 @@ export default function ReportPage() {
     return (
       <main className="flex-1 p-xl overflow-y-auto ml-72">
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-center bg-error-container p-xl rounded-xl max-w-md">
+          <div className="text-center bg-error-container p-xl rounded-xl max-w-[28rem]">
             <AlertTriangle className="w-10 h-10 text-error mx-auto mb-4" />
             <p className="label-md text-on-error-container mb-4">{reportError}</p>
             <button

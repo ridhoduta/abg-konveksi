@@ -23,7 +23,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-white-120font-sans text-on-surface">
+    <div className="flex min-h-screen bg-background font-sans text-on-surface">
       <AdminSidebar activePath={activePath} />
       {children}
     </div>
