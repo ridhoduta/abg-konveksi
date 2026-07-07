@@ -130,7 +130,7 @@ export default function Home() {
               <Link href="/login" className="w-full text-on-surface-variant font-medium py-2 hover:text-primary transition-all text-center block" onClick={() => setMobileMenuOpen(false)}>
                 Masuk
               </Link>
-              <Link href="/download" className="w-full px-lg py-sm signature-gradient text-white rounded-full font-bold text-center flex items-center justify-center gap-xs" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/apk/abg-konveksi.apk" className="w-full px-lg py-sm signature-gradient text-white rounded-full font-bold text-center flex items-center justify-center gap-xs" onClick={() => setMobileMenuOpen(false)}>
                 <Smartphone size={18} />
                 Download Aplikasi
               </Link>
@@ -153,7 +153,7 @@ export default function Home() {
               <Link href="/login" className="inline-flex justify-center items-center px-lg py-md signature-gradient text-white rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-lg hover:shadow-primary/20">
                 Mulai Sekarang
               </Link>
-              <Link href="/download" className="inline-flex justify-center items-center px-lg py-md border-2 border-outline-variant text-on-surface rounded-full font-bold text-lg hover:bg-surface-container-low transition-all gap-xs">
+              <Link href="/apk/abg-konveksi.apk" className="inline-flex justify-center items-center px-lg py-md border-2 border-outline-variant text-on-surface rounded-full font-bold text-lg hover:bg-surface-container-low transition-all gap-xs">
                 <Smartphone size={20} />
                 Download Aplikasi Mobile
               </Link>
