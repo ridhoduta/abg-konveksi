@@ -331,7 +331,7 @@ export function ProductModal({
                           Stock: {variant.stock}
                         </div>
                       </div>
-
+                      {variant.stock > 0 ? (
                       <div className="flex items-center border border-slate-300 rounded-lg overflow-hidden h-10 bg-white">
                         <button
                           onClick={() => updateQuantity(variant.id, -1)}
@@ -349,6 +349,9 @@ export function ProductModal({
                           <Plus className="w-4 h-4" />
                         </button>
                       </div>
+                      ) : (
+                        <div className="text-xs text-red-500">Stok habis</div>
+                      )}
                     </div>
                   );
                 })}

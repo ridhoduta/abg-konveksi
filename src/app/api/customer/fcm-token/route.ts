@@ -16,6 +16,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Token is required" }, { status: 400 });
     }
 
+    // Check if customer exists
+    const customer = await prisma.customer.findUnique({
+      where: { id: session.userId }
+    });
+
+    if (!customer) {
+      return NextResponse.json({ message: "Customer not found" }, { status: 404 });
+    }
+
     // Upsert to handle existing tokens (e.g. updating user association on the same device)
     const fcmToken = await prisma.fcmToken.upsert({
       where: { token: token },

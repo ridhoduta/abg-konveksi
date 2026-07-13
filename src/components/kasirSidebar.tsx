@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { LayoutDashboard, ShoppingBag, Settings, HelpCircle, LogOut, Receipt } from "lucide-react";
+import { LayoutDashboard, ShoppingBag,LogOut, Receipt } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/app/service/authService";
 

@@ -136,7 +136,7 @@ export default function DetailOrderPage() {
                   Metode Pembayaran
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div 
                     onClick={() => setPaymentMethod("CASH")}
                     className={`cursor-pointer p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${paymentMethod === "CASH" ? "border-primary bg-primary-container text-on-primary-container" : "border-outline-variant hover:border-outline bg-surface text-on-surface-variant"}`}
@@ -150,13 +150,6 @@ export default function DetailOrderPage() {
                   >
                     <CreditCard className={`w-8 h-8 ${paymentMethod === "TRANSFER" ? "text-primary" : "text-on-surface-variant"}`} />
                     <span className="font-label-lg font-bold">Transfer</span>
-                  </div>
-                  <div 
-                    onClick={() => setPaymentMethod("COD")}
-                    className={`cursor-pointer p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${paymentMethod === "COD" ? "border-primary bg-primary-container text-on-primary-container" : "border-outline-variant hover:border-outline bg-surface text-on-surface-variant"}`}
-                  >
-                    <Truck className={`w-8 h-8 ${paymentMethod === "COD" ? "text-primary" : "text-on-surface-variant"}`} />
-                    <span className="font-label-lg font-bold">Bayar di Tempat</span>
                   </div>
                 </div>
 

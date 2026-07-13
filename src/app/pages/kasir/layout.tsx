@@ -10,10 +10,10 @@ export default function KasirLayout({ children }: { children: ReactNode }) {
 
   // Determine activePath dynamically from the current pathname
   let activePath = "home";
-  if (pathname.startsWith("/pages/kasir/product")) {
-    activePath = "product";
-  } else if (pathname.startsWith("/pages/kasir/order")) {
+  if (pathname.startsWith("/pages/kasir/order")) {
     activePath = "order";
+  } else if (pathname.startsWith("/pages/kasir/report")) {
+    activePath = "report";
   }
 
   return (

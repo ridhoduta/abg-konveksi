@@ -156,7 +156,9 @@ export async function POST(req: NextRequest) {
 
         const parameter = {
           transaction_details: {
-            order_id: order.id.toString(), // Akan ditangkap webhook nanti
+            // Ditambahkan timestamp unik agar tidak bentrok di Midtrans Sandbox (error 400 order_id sudah digunakan)
+            // webhook menggunakan parseInt(order_id, 10) sehingga tetap mendapatkan ID order murni
+            order_id: `${order.id}-${Date.now()}`,
             gross_amount: finalAmount
           },
           customer_details: {
