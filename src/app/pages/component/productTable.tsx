@@ -80,7 +80,6 @@ export function ProductTable({ products, onDelete }: { products: Product[], onDe
               <th className="px-6 py-4 font-label-sm text-label-sm">Image</th>
               <th className="px-6 py-4 font-label-sm text-label-sm">Product Name</th>
               <th className="px-6 py-4 font-label-sm text-label-sm">Category</th>
-              <th className="px-6 py-4 font-label-sm text-label-sm">Description</th>
               <th className="px-6 py-4 font-label-sm text-label-sm">Variants</th>
               <th className="px-6 py-4 font-label-sm text-label-sm">Actions</th>
             </tr>
@@ -91,8 +90,8 @@ export function ProductTable({ products, onDelete }: { products: Product[], onDe
                 <td className="px-6 py-4 font-body-sm text-on-surface-variant">#GP-{product.id.toString().padStart(4, '0')}</td>
                 <td className="px-6 py-4">
                   <div className="w-12 h-12 bg-surface-container rounded-lg overflow-hidden flex items-center justify-center">
-                    {product.image ? (
-                      <img alt="Product" className="w-full h-full object-cover" src={product.image} />
+                    {product.images && product.images.length > 0 ? (
+                      <img alt="Product" className="w-full h-full object-cover" src={product.images.find(img => img.isPrimary)?.url || product.images[0].url} />
                     ) : (
                       <Image className="w-6 h-6 text-outline-variant" />
                     )}
@@ -104,14 +103,11 @@ export function ProductTable({ products, onDelete }: { products: Product[], onDe
                     {product.category?.name || "Uncategorized"}
                   </span>
                 </td>
-                <td className="px-6 py-4 font-body-sm text-on-surface-variant max-w-[20rem] truncate">
-                  {product.description || "-"}
-                </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-wrap gap-1">
                     {product.variants.map((v) => (
                       <span key={v.id} className="px-2 py-0.5 bg-surface-container text-primary rounded-md font-label-sm text-[10px]">
-                        {v.size.name}
+                        {v.size.name} ({v.stock})
                       </span>
                     ))}
                   </div>
@@ -138,7 +134,7 @@ export function ProductTable({ products, onDelete }: { products: Product[], onDe
             ))}
             {filteredProducts.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-6 py-8 text-center text-on-surface-variant">
+                <td colSpan={6} className="px-6 py-8 text-center text-on-surface-variant">
                   No products found
                 </td>
               </tr>

@@ -18,16 +18,26 @@ export interface ProductVariant {
   size: Size;
 }
 
+export interface ProductImage {
+  id: number;
+  productId: number;
+  url: string;
+  isPrimary: boolean;
+  order: number;
+  createdAt: string;
+}
+
 export interface Product {
   id: number;
   name: string;
   description: string | null;
-  image: string | null;
+  stock: number;
   categoryId: number;
   category: Category;
   createdAt: string;
   updatedAt: string;
   variants: ProductVariant[];
+  images: ProductImage[];
 }
 
 export function useProduct() {

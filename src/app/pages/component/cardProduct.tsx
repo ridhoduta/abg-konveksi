@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Product, ProductVariant } from "@/app/pages/hooks/useProduct";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CardProductProps {
   product: Product;
@@ -43,9 +43,9 @@ export function CardProduct({
     >
       {/* IMAGE */}
       <div className="relative h-48 bg-slate-100 overflow-hidden flex-shrink-0">
-        {product.image ? (
+        {product.images && product.images.length > 0 ? (
           <img
-            src={product.image}
+            src={product.images.find(img => img.isPrimary)?.url || product.images[0].url}
             alt={product.name}
             className="
               w-full h-full object-cover
@@ -120,6 +120,7 @@ export function ProductModal({
 }: ProductModalProps) {
   const [mounted, setMounted] = useState(false);
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -216,38 +217,87 @@ export function ProductModal({
 
         {/* CONTENT */}
         <div className="flex-1 overflow-y-auto p-6 overscroll-contain">
-          {/* PRODUCT */}
-          <div className="flex gap-4 mb-6">
-            <div className="w-24 h-24 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
-              {product.image ? (
+          {/* PRODUCT IMAGE SLIDER */}
+          {product.images && product.images.length > 0 ? (
+            <div className="mb-6">
+              <div className="relative w-full h-64 rounded-2xl overflow-hidden bg-slate-100">
                 <img
-                  src={product.image}
-                  alt={product.name}
+                  src={product.images[currentImageIndex].url}
+                  alt={`${product.name} - Image ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover"
                 />
-              ) : (
-                <div className="w-full h-full bg-slate-200" />
+                
+                {/* Navigation Buttons */}
+                {product.images.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? product.images.length - 1 : prev - 1))}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentImageIndex((prev) => (prev === product.images.length - 1 ? 0 : prev + 1))}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
+                )}
+                
+                {/* Image Counter */}
+                {product.images.length > 1 && (
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/50 text-white text-xs font-medium">
+                    {currentImageIndex + 1} / {product.images.length}
+                  </div>
+                )}
+              </div>
+              
+              {/* Thumbnail Indicators */}
+              {product.images.length > 1 && (
+                <div className="flex gap-2 mt-3 justify-center">
+                  {product.images.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentImageIndex ? "bg-primary" : "bg-slate-300"
+                      }`}
+                    />
+                  ))}
+                </div>
               )}
             </div>
-
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-lg text-on-surface line-clamp-2">
-                {product.name}
-              </h3>
-
-              <p className="text-sm text-on-surface-variant mt-1">
-                {product.category?.name}
-              </p>
-
-              <p className="text-xl font-bold text-primary mt-3">
-                {product.variants?.length > 1 && (
-                  <span className="text-xs font-normal text-on-surface-variant mr-1">
-                    Start from
-                  </span>
-                )}
-                Rp {lowestPrice.toLocaleString("id-ID")}
-              </p>
+          ) : (
+            <div className="flex gap-4 mb-6">
+              <div className="w-24 h-24 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0">
+                <div className="w-full h-full bg-slate-200" />
+              </div>
             </div>
+          )}
+          
+          {/* PRODUCT INFO */}
+          <div className="mb-6">
+
+            <h3 className="font-semibold text-lg text-on-surface line-clamp-2">
+              {product.name}
+            </h3>
+
+            <p className="text-sm text-on-surface-variant mt-1">
+              {product.category?.name}
+            </p>
+
+            <p className="text-xl font-bold text-primary mt-3">
+              {product.variants?.length > 1 && (
+                <span className="text-xs font-normal text-on-surface-variant mr-1">
+                  Start from
+                </span>
+              )}
+              Rp {lowestPrice.toLocaleString("id-ID")}
+            </p>
           </div>
 
           {/* VARIANTS WITH QUANTITY */}
@@ -276,6 +326,9 @@ export function ProductModal({
                         </div>
                         <div className="text-sm text-primary font-medium">
                           Rp {variant.price.toLocaleString("id-ID")}
+                        </div>
+                        <div className="text-xs text-on-surface-variant mt-1">
+                          Stock: {variant.stock}
                         </div>
                       </div>
 

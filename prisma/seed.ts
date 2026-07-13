@@ -63,138 +63,187 @@ async function main() {
 
   // --- Seed Products & Variants ---
   const productsToSeed = [
-  {
-    name: "Kaos Polos Cotton Combed 30s",
-    description: "Kaos polos berkualitas tinggi berbahan 100% Cotton Combed 30s. Sangat nyaman, adem, dan cocok untuk sablon manual maupun digital.",
-    image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Kaos",
-    prices: {
-      S: 45000,
-      M: 47000,
-      L: 50000,
-      XL: 53000,
-      XXL: 56000,
+    {
+      name: "Kaos Polos Cotton Combed 30s",
+      description: "Kaos polos berkualitas tinggi berbahan 100% Cotton Combed 30s. Sangat nyaman, adem, dan cocok untuk sablon manual maupun digital.",
+      images: [
+        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1562157873-818bc0726f68?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Kaos",
+      stock: 100,
+      prices: {
+        S: 45000,
+        M: 47000,
+        L: 50000,
+        XL: 53000,
+        XXL: 56000,
+      },
     },
-  },
-  {
-    name: "Kemeja PDL Lapangan Dril",
-    description: "Kemeja PDL (Pakaian Dinas Lapangan) lengan panjang bahan American Drill. Kuat, rapi, dengan ventilasi jala di punggung untuk sirkulasi udara.",
-    image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Kemeja",
-    prices: {
-      S: 110000,
-      M: 115000,
-      L: 120000,
-      XL: 125000,
-      XXL: 130000,
+    {
+      name: "Kemeja PDL Lapangan Dril",
+      description: "Kemeja PDL (Pakaian Dinas Lapangan) lengan panjang bahan American Drill. Kuat, rapi, dengan ventilasi jala di punggung untuk sirkulasi udara.",
+      images: [
+        "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Kemeja",
+      stock: 50,
+      prices: {
+        S: 110000,
+        M: 115000,
+        L: 120000,
+        XL: 125000,
+        XXL: 130000,
+      },
     },
-  },
-  {
-    name: "Jaket Hoodie Fleece",
-    description: "Hoodie pullover klasik dengan bahan Cotton Fleece tebal dan hangat. Dilengkapi saku kanguru dan tali serut pada penutup kepala.",
-    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Jaket",
-    prices: {
-      S: 125000,
-      M: 130000,
-      L: 135000,
-      XL: 140000,
-      XXL: 145000,
+    {
+      name: "Jaket Hoodie Fleece",
+      description: "Hoodie pullover klasik dengan bahan Cotton Fleece tebal dan hangat. Dilengkapi saku kanguru dan tali serut pada penutup kepala.",
+      images: [
+        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a55?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Jaket",
+      stock: 30,
+      prices: {
+        S: 125000,
+        M: 130000,
+        L: 135000,
+        XL: 140000,
+        XXL: 145000,
+      },
     },
-  },
-  {
-    name: "Jas Almamater Kampus",
-    description: "Jas almamater standard universitas/sekolah. Menggunakan bahan High Twist berkualitas, lengkap dengan furing dalam dan kancing logam custom.",
-    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Almamater",
-    prices: {
-      S: 135000,
-      M: 140000,
-      L: 145000,
-      XL: 150000,
-      XXL: 155000,
+    {
+      name: "Jas Almamater Kampus",
+      description: "Jas almamater standard universitas/sekolah. Menggunakan bahan High Twist berkualitas, lengkap dengan furing dalam dan kancing logam custom.",
+      images: [
+        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Almamater",
+      stock: 25,
+      prices: {
+        S: 135000,
+        M: 140000,
+        L: 145000,
+        XL: 150000,
+        XXL: 155000,
+      },
     },
-  },
-  // --- TAMBAHAN PRODUK BARU ---
-  {
-    name: "Polo Shirt Pique Premium",
-    description: "Kaos polo berkerah dengan bahan Cotton Pique premium. Tekstur berpori khas polo shirt, menyerap keringat dengan baik, dan memberikan kesan semi-formal.",
-    image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Kaos",
-    prices: {
-      S: 65000,
-      M: 67000,
-      L: 70000,
-      XL: 75000,
-      XXL: 80000,
+    {
+      name: "Polo Shirt Pique Premium",
+      description: "Kaos polo berkerah dengan bahan Cotton Pique premium. Tekstur berpori khas polo shirt, menyerap keringat dengan baik, dan memberikan kesan semi-formal.",
+      images: [
+        "https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1611312449412-6cefac5dc3e4?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Kaos",
+      stock: 75,
+      prices: {
+        S: 65000,
+        M: 67000,
+        L: 70000,
+        XL: 75000,
+        XXL: 80000,
+      },
     },
-  },
-  {
-    name: "Kemeja Flanel Kotak-Kotak",
-    description: "Kemeja kasual bahan flanel wol lembut berkualitas tinggi. Motif kotak-kotak klasik yang timeless, cocok untuk dipakai sebagai kemeja utama atau outer.",
-    image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Kemeja",
-    prices: {
-      S: 95000,
-      M: 100000,
-      L: 105000,
-      XL: 110000,
-      XXL: 115000,
+    {
+      name: "Kemeja Flanel Kotak-Kotak",
+      description: "Kemeja kasual bahan flanel wol lembut berkualitas tinggi. Motif kotak-kotak klasik yang timeless, cocok untuk dipakai sebagai kemeja utama atau outer.",
+      images: [
+        "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Kemeja",
+      stock: 60,
+      prices: {
+        S: 95000,
+        M: 100000,
+        L: 105000,
+        XL: 110000,
+        XXL: 115000,
+      },
     },
-  },
-  {
-    name: "Jaket Bomber Taslan Waterproof",
-    description: "Jaket bomber stylish menggunakan bahan Taslan JN yang semi-waterproof dan windproof. Bagian dalam dilapisi furing dacron tebal, cocok untuk berkendara.",
-    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Jaket",
-    prices: {
-      S: 140000,
-      M: 145000,
-      L: 150000,
-      XL: 155000,
-      XXL: 165000,
+    {
+      name: "Jaket Bomber Taslan Waterproof",
+      description: "Jaket bomber stylish menggunakan bahan Taslan JN yang semi-waterproof dan windproof. Bagian dalam dilapisi furing dacron tebal, cocok untuk berkendara.",
+      images: [
+        "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1548883354-7622d03aca27?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Jaket",
+      stock: 40,
+      prices: {
+        S: 140000,
+        M: 145000,
+        L: 150000,
+        XL: 155000,
+        XXL: 165000,
+      },
     },
-  },
-  {
-    name: "Sweater Crewneck Cotton",
-    description: "Sweater model crewneck minimalis tanpa tudung kepala. Terbuat dari bahan katun baby terry yang lembut, ringan, namun tetap hangat saat cuaca dingin.",
-    image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Jaket",
-    prices: {
-      S: 85000,
-      M: 90000,
-      L: 95000,
-      XL: 100000,
-      XXL: 105000,
+    {
+      name: "Sweater Crewneck Cotton",
+      description: "Sweater model crewneck minimalis tanpa tudung kepala. Terbuat dari bahan katun baby terry yang lembut, ringan, namun tetap hangat saat cuaca dingin.",
+      images: [
+        "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Jaket",
+      stock: 55,
+      prices: {
+        S: 85000,
+        M: 90000,
+        L: 95000,
+        XL: 100000,
+        XXL: 105000,
+      },
     },
-  },
-  {
-    name: "Rompi Safety Drill Lapangan",
-    description: "Rompi proyek/lapangan dengan bahan Drill kokoh. Dilengkapi dengan pita reflektor (scotlight) yang menyala dalam gelap demi keamanan kerja.",
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Rompi",
-    prices: {
-      S: 75000,
-      M: 78000,
-      L: 82000,
-      XL: 87000,
-      XXL: 92000,
+    {
+      name: "Rompi Safety Drill Lapangan",
+      description: "Rompi proyek/lapangan dengan bahan Drill kokoh. Dilengkapi dengan pita reflektor (scotlight) yang menyala dalam gelap demi keamanan kerja.",
+      images: [
+        "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1590133325985-2c64da24b0be?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1516715094727-ec48be335d79?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Rompi",
+      stock: 80,
+      prices: {
+        S: 75000,
+        M: 78000,
+        L: 82000,
+        XL: 87000,
+        XXL: 92000,
+      },
     },
-  },
-  {
-    name: "Jersey Olahraga Dryfit",
-    description: "Jersey olahraga menggunakan bahan Dryfit Benzema yang memiliki sirkulasi udara maksimal, sangat cepat kering, dan sangat elastis untuk pergerakan aktif.",
-    image: "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=600&auto=format&fit=crop",
-    categoryName: "Kaos",
-    prices: {
-      S: 55000,
-      M: 57000,
-      L: 60000,
-      XL: 65000,
-      XXL: 70000,
+    {
+      name: "Jersey Olahraga Dryfit",
+      description: "Jersey olahraga menggunakan bahan Dryfit Benzema yang memiliki sirkulasi udara maksimal, sangat cepat kering, dan sangat elastis untuk pergerakan aktif.",
+      images: [
+        "https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=600&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=600&auto=format&fit=crop"
+      ],
+      categoryName: "Kaos",
+      stock: 90,
+      prices: {
+        S: 55000,
+        M: 57000,
+        L: 60000,
+        XL: 65000,
+        XXL: 70000,
+      },
     },
-  },
-];
+  ];
 
   for (const item of productsToSeed) {
     const category = categories[item.categoryName];
@@ -211,18 +260,42 @@ async function main() {
         where: { id: product.id },
         data: {
           description: item.description,
-          image: item.image,
           categoryId: category.id,
+          stock: item.stock,
         },
       });
+
+      // Delete existing images and recreate
+      await prisma.productImage.deleteMany({
+        where: { productId: product.id },
+      });
+
+      // Create new images
+      for (let i = 0; i < item.images.length; i++) {
+        await prisma.productImage.create({
+          data: {
+            productId: product.id,
+            url: item.images[i],
+            isPrimary: i === 0,
+            order: i,
+          },
+        });
+      }
     } else {
       // Create new product
       product = await prisma.product.create({
         data: {
           name: item.name,
           description: item.description,
-          image: item.image,
           categoryId: category.id,
+          stock: item.stock,
+          images: {
+            create: item.images.map((url, index) => ({
+              url,
+              isPrimary: index === 0,
+              order: index,
+            })),
+          },
         },
       });
     }

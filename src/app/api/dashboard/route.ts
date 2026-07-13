@@ -116,12 +116,25 @@ export async function GET() {
           items.map(async (item: any) => {
             const variant = await prisma.productVariant.findUnique({
               where: { id: item.variantId },
-              include: { product: { select: { id: true, name: true, image: true } } },
+              include: { 
+                product: { 
+                  select: { 
+                    id: true, 
+                    name: true,
+                    images: {
+                      where: { isPrimary: true },
+                      take: 1,
+                      select: { url: true }
+                    }
+                  } 
+                } 
+              },
             });
+            const primaryImage = variant?.product.images?.[0]?.url ?? null;
             return {
               productId: variant?.product.id,
               name: variant?.product.name ?? "Unknown",
-              image: variant?.product.image ?? null,
+              image: primaryImage,
               quantity: item._sum.quantity ?? 0,
               revenue: (item._sum.quantity ?? 0) * (item._sum.price ?? 0),
             };

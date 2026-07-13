@@ -76,6 +76,9 @@ export const productService = {
             size: true,
           },
         },
+        images: {
+          orderBy: { order: "asc" },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -91,6 +94,9 @@ export const productService = {
             size: true,
           },
         },
+        images: {
+          orderBy: { order: "asc" },
+        },
       },
     });
   },
@@ -98,21 +104,33 @@ export const productService = {
   async createProduct(data: {
     name: string;
     description?: string;
-    image?: string;
     categoryId: number;
-    variants?: { sizeId: number; price: number }[];
+    images?: { url: string; isPrimary?: boolean; order?: number }[];
+    variants?: { sizeId: number; price: number; description?: string; stock: number }[];
   }) {
-    const { variants, ...productData } = data;
+    const { variants, images, ...productData } = data;
 
     return await prisma.product.create({
       data: {
         ...productData,
+        images:
+          images && images.length > 0
+            ? {
+                create: images.map((img, index) => ({
+                  url: img.url,
+                  isPrimary: img.isPrimary ?? index === 0,
+                  order: img.order ?? index,
+                })),
+              }
+            : undefined,
         variants:
           variants && variants.length > 0
             ? {
                 create: variants.map((v) => ({
                   sizeId: v.sizeId,
                   price: v.price,
+                  description: v.description,
+                  stock: v.stock,
                 })),
               }
             : undefined,
@@ -124,6 +142,9 @@ export const productService = {
             size: true,
           },
         },
+        images: {
+          orderBy: { order: "asc" },
+        },
       },
     });
   },
@@ -133,16 +154,36 @@ export const productService = {
     data: {
       name?: string;
       description?: string;
-      image?: string;
       categoryId?: number;
-      variants?: { sizeId: number; price: number }[];
+      images?: { url: string; isPrimary?: boolean; order?: number }[];
+      variants?: { sizeId: number; price: number; description?: string; stock: number }[];
     }
   ) {
-    const { variants, ...productData } = data;
+    const { variants, images, ...productData } = data;
 
-    // If variants are provided, we'll update them safely using merge/upsert.
-    if (variants) {
-      return await prisma.$transaction(async (tx: any) => {
+    return await prisma.$transaction(async (tx: any) => {
+      // Handle images update
+      if (images) {
+        // Delete all existing images for this product
+        await tx.productImage.deleteMany({
+          where: { productId: id },
+        });
+
+        // Create new images
+        if (images.length > 0) {
+          await tx.productImage.createMany({
+            data: images.map((img, index) => ({
+              productId: id,
+              url: img.url,
+              isPrimary: img.isPrimary ?? index === 0,
+              order: img.order ?? index,
+            })),
+          });
+        }
+      }
+
+      // If variants are provided, we'll update them safely using merge/upsert.
+      if (variants) {
         // 1. Get all current variants for the product
         const currentVariants = await tx.productVariant.findMany({
           where: { productId: id },
@@ -180,42 +221,36 @@ export const productService = {
             },
             update: {
               price: v.price,
+              description: v.description,
+              stock: v.stock,
             },
             create: {
               productId: id,
               sizeId: v.sizeId,
               price: v.price,
+              description: v.description,
+              stock: v.stock,
             },
           });
         }
+      }
 
-        // 4. Finally, update the product fields
-        return await tx.product.update({
-          where: { id },
-          data: productData,
-          include: {
-            category: true,
-            variants: {
-              include: {
-                size: true,
-              },
+      // Finally, update the product fields
+      return await tx.product.update({
+        where: { id },
+        data: productData,
+        include: {
+          category: true,
+          variants: {
+            include: {
+              size: true,
             },
           },
-        });
-      });
-    }
-
-    return await prisma.product.update({
-      where: { id },
-      data: productData,
-      include: {
-        category: true,
-        variants: {
-          include: {
-            size: true,
+          images: {
+            orderBy: { order: "asc" },
           },
         },
-      },
+      });
     });
   },
 

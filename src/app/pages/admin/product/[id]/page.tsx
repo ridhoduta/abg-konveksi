@@ -13,9 +13,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
   const [categoryId, setCategoryId] = useState<number | "">("");
-  const [variants, setVariants] = useState<{ sizeId: number; price: number }[]>([]);
+  const [variants, setVariants] = useState<{ sizeId: number; price: number; description?: string; stock: number }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,9 +24,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const [newSizeName, setNewSizeName] = useState("");
   const [isAddingSize, setIsAddingSize] = useState(false);
 
-  // States for Supabase Image Upload
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>("");
+  // States for Multiple Image Upload
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<{ id: number; url: string; isPrimary: boolean; order: number }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
@@ -42,26 +42,31 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     }
   };
 
-  const handleSelectFile = (file: File) => {
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
-    if (!allowedTypes.includes(file.type)) {
-      setUploadError("Hanya file gambar (JPG, PNG, WEBP) yang diperbolehkan");
-      return;
-    }
+  const handleSelectFiles = (files: FileList | null) => {
+    if (!files) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadError("Ukuran file maksimal adalah 5MB");
-      return;
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    const newFiles: File[] = [];
+    const newPreviews: string[] = [];
+
+    for (const file of Array.from(files)) {
+      if (!allowedTypes.includes(file.type)) {
+        setUploadError("Hanya file gambar (JPG, PNG, WEBP) yang diperbolehkan");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        setUploadError("Ukuran file maksimal adalah 5MB");
+        return;
+      }
+
+      newFiles.push(file);
+      newPreviews.push(URL.createObjectURL(file));
     }
 
     setUploadError(null);
-    setSelectedFile(file);
-    
-    // Revoke previous blob if any to prevent memory leaks
-    if (previewUrl && previewUrl.startsWith("blob:")) {
-      URL.revokeObjectURL(previewUrl);
-    }
-    setPreviewUrl(URL.createObjectURL(file));
+    setSelectedFiles([...selectedFiles, ...newFiles]);
+    setPreviewUrls([...previewUrls, ...newPreviews]);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -69,24 +74,41 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     e.stopPropagation();
     setDragActive(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleSelectFile(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files) {
+      handleSelectFiles(e.dataTransfer.files);
     }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      handleSelectFile(e.target.files[0]);
+    handleSelectFiles(e.target.files);
+  };
+
+  const handleClearImage = (index: number, isExisting: boolean = false) => {
+    if (isExisting) {
+      setExistingImages(existingImages.filter((_, i) => i !== index));
+    } else {
+      const newFiles = selectedFiles.filter((_, i) => i !== index);
+      const newPreviews = previewUrls.filter((_, i) => i !== index);
+
+      // Revoke blob URL
+      if (previewUrls[index] && previewUrls[index].startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrls[index]);
+      }
+
+      setSelectedFiles(newFiles);
+      setPreviewUrls(newPreviews);
     }
   };
 
-  const handleClearImage = () => {
-    setImage("");
-    setSelectedFile(null);
-    if (previewUrl && previewUrl.startsWith("blob:")) {
-      URL.revokeObjectURL(previewUrl);
-    }
-    setPreviewUrl("");
+  const handleClearAllImages = () => {
+    previewUrls.forEach(url => {
+      if (url.startsWith("blob:")) {
+        URL.revokeObjectURL(url);
+      }
+    });
+    setSelectedFiles([]);
+    setPreviewUrls([]);
+    setExistingImages([]);
   };
 
   useEffect(() => {
@@ -102,13 +124,23 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       if (product) {
         setName(product.name || "");
         setDescription(product.description || "");
-        setImage(product.image || "");
         setCategoryId(product.categoryId || "");
+        
+        if (product.images && product.images.length > 0) {
+          setExistingImages(product.images.map((img: any) => ({
+            id: img.id,
+            url: img.url,
+            isPrimary: img.isPrimary,
+            order: img.order,
+          })));
+        }
         
         if (product.variants) {
           setVariants(product.variants.map((v: any) => ({
             sizeId: v.sizeId,
-            price: v.price
+            price: v.price,
+            description: v.description,
+            stock: v.stock ?? 0
           })));
         }
       }
@@ -126,7 +158,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       setIsAddingSize(true);
       return;
     }
-    setVariants([...variants, { sizeId: sizes[0].id, price: 0 }]);
+    setVariants([...variants, { sizeId: sizes[0].id, price: 0, stock: 0 }]);
   };
 
   const handleAddCategory = async () => {
@@ -179,9 +211,15 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     setVariants(newVariants);
   };
 
-  const handleVariantChange = (index: number, field: "sizeId" | "price", value: number) => {
+  const handleVariantChange = (index: number, field: "sizeId" | "price" | "stock", value: number) => {
     const newVariants = [...variants];
     newVariants[index][field] = value;
+    setVariants(newVariants);
+  };
+
+  const handleVariantDescriptionChange = (index: number, value: string) => {
+    const newVariants = [...variants];
+    newVariants[index].description = value;
     setVariants(newVariants);
   };
 
@@ -192,36 +230,55 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     
     try {
       setIsSubmitting(true);
-      let finalImageUrl = image;
+      const finalImages: { url: string; isPrimary: boolean; order: number }[] = [];
 
-      if (selectedFile) {
-        setIsUploading(true);
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
+      // Combine existing images and new uploads
+      let currentOrder = existingImages.length;
+      
+      // Keep existing images
+      existingImages.forEach((img, index) => {
+        finalImages.push({
+          url: img.url,
+          isPrimary: img.isPrimary,
+          order: index,
         });
+      });
 
-        const uploadData = await uploadRes.json();
-        if (!uploadRes.ok) {
-          throw new Error(uploadData.message || "Gagal mengunggah file ke Supabase");
-        }
+      // Upload new files
+      if (selectedFiles.length > 0) {
+        setIsUploading(true);
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const formData = new FormData();
+          formData.append("file", selectedFiles[i]);
 
-        if (uploadData.success && uploadData.url?.publicUrl) {
-          finalImageUrl = uploadData.url.publicUrl;
-          setImage(finalImageUrl);
-        } else {
-          throw new Error("Format respon upload tidak valid");
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const uploadData = await uploadRes.json();
+          if (!uploadRes.ok) {
+            throw new Error(uploadData.message || "Gagal mengunggah file ke Supabase");
+          }
+
+          if (uploadData.success && uploadData.url?.publicUrl) {
+            finalImages.push({
+              url: uploadData.url.publicUrl,
+              isPrimary: currentOrder === 0 && finalImages.length === 0,
+              order: currentOrder,
+            });
+            currentOrder++;
+          } else {
+            throw new Error("Format respon upload tidak valid");
+          }
         }
       }
 
       await updateProduct(parseInt(id), {
         name,
         description,
-        image: finalImageUrl,
         categoryId: Number(categoryId),
+        images: finalImages,
         variants
       });
       router.push("/pages/admin/product");
@@ -316,11 +373,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div className="space-y-base">
                   <label className="font-label-md text-label-md text-on-surface">Description</label>
-                  <textarea 
+                  <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none" 
-                    placeholder="Describe the material, fit, and care instructions..." 
+                    className="w-full px-4 py-3 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"
+                    placeholder="Describe the material, fit, and care instructions..."
                     rows={4}
                   ></textarea>
                 </div>
@@ -367,36 +424,61 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     </div>
                   )}
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+                  <div className="space-y-md">
                     {variants.map((variant, index) => (
-                      <div key={index} className="p-4 bg-surface-container-low border border-outline-variant rounded-xl space-y-3">
+                      <div key={index} className="p-6 bg-surface-container-low border border-outline-variant rounded-xl space-y-4">
                         <div className="flex justify-between items-center">
                           <select 
                             value={variant.sizeId}
                             onChange={(e) => handleVariantChange(index, "sizeId", parseInt(e.target.value))}
-                            className="bg-transparent border-none font-label-sm text-on-surface-variant outline-none cursor-pointer focus:ring-0 p-0"
+                            className="bg-transparent border-none font-label-md text-on-surface outline-none cursor-pointer focus:ring-0 p-0"
                           >
                             {sizes.map(s => (
                               <option key={s.id} value={s.id}>{s.name}</option>
                             ))}
                           </select>
                           <button onClick={() => handleRemoveVariant(index)} className="text-error hover:opacity-70 transition-opacity" type="button">
-                            <Trash2 className="w-[18px] h-[18px]" />
+                            <Trash2 className="w-5 h-5" />
                           </button>
                         </div>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-md">Rp</span>
-                          <input 
-                            value={variant.price || ""}
-                            onChange={(e) => handleVariantChange(index, "price", parseInt(e.target.value) || 0)}
-                            className="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded-lg text-body-sm focus:ring-2 focus:ring-primary/20 outline-none" 
-                            type="number" 
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="font-label-sm text-label-sm text-on-surface-variant">Price</label>
+                            <div className="relative">
+                              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-label-md">Rp</span>
+                              <input 
+                                value={variant.price || ""}
+                                onChange={(e) => handleVariantChange(index, "price", parseInt(e.target.value) || 0)}
+                                className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 outline-none" 
+                                type="number" 
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="font-label-sm text-label-sm text-on-surface-variant">Stock</label>
+                            <input
+                              value={variant.stock || ""}
+                              onChange={(e) => handleVariantChange(index, "stock", parseInt(e.target.value) || 0)}
+                              className="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 outline-none"
+                              type="number"
+                              min="0"
+                              placeholder="0"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="font-label-sm text-label-sm text-on-surface-variant">Variant Description</label>
+                          <input
+                            value={variant.description || ""}
+                            onChange={(e) => handleVariantDescriptionChange(index, e.target.value)}
+                            className="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg text-body-md focus:ring-2 focus:ring-primary/20 outline-none"
+                            placeholder="e.g. Red color"
                           />
                         </div>
                       </div>
                     ))}
                     {variants.length === 0 && (
-                      <div className="col-span-full p-4 border border-dashed border-outline-variant rounded-xl text-center text-on-surface-variant text-sm">
+                      <div className="p-4 border border-dashed border-outline-variant rounded-xl text-center text-on-surface-variant text-sm">
                         No variants added. Click "Add Variant" to set prices for different sizes.
                       </div>
                     )}
@@ -428,6 +510,50 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 <label className="font-label-md text-label-md text-on-surface block mb-base">Product Images</label>
                 
                 <div className="space-y-4">
+                  {/* Existing Images Grid */}
+                  {existingImages.length > 0 && (
+                    <div className="grid grid-cols-2 gap-3">
+                      {existingImages.map((img, index) => (
+                        <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden group">
+                          <img alt={`Existing ${index + 1}`} className="w-full h-full object-cover" src={img.url} />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
+                            <button
+                              type="button"
+                              onClick={() => handleClearImage(index, true)}
+                              className="p-2 bg-error text-white rounded-full hover:bg-error/80 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                            {img.isPrimary && (
+                              <span className="text-xs bg-primary text-white px-2 py-1 rounded-full font-medium">Primary</span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* New Image Previews Grid */}
+                  {previewUrls.length > 0 && (
+                    <div className="grid grid-cols-2 gap-3">
+                      {previewUrls.map((url, index) => (
+                        <div key={index} className="relative aspect-square rounded-lg overflow-hidden group">
+                          <img alt={`New ${index + 1}`} className="w-full h-full object-cover" src={url} />
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 transition-opacity">
+                            <button
+                              type="button"
+                              onClick={() => handleClearImage(index, false)}
+                              className="p-2 bg-error text-white rounded-full hover:bg-error/80 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                            <span className="text-xs bg-secondary text-white px-2 py-1 rounded-full font-medium">New</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   {/* Drag and Drop Zone */}
                   <div 
                     className={`flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-300 ${
@@ -446,6 +572,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       onChange={handleFileChange}
                       accept="image/*"
+                      multiple
                       disabled={isUploading || isSubmitting}
                     />
                     {isUploading ? (
@@ -453,20 +580,13 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                         <Loader2 className="w-8 h-8 text-primary animate-spin" />
                         <span className="text-sm font-medium text-on-surface">Uploading to Supabase...</span>
                       </div>
-                    ) : (previewUrl || image) ? (
-                      <div className="aspect-square w-full rounded-lg overflow-hidden relative group">
-                        <img alt="Thumbnail" className="w-full h-full object-cover" src={previewUrl || image} />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity">
-                          <span className="text-xs bg-black/60 px-3 py-1.5 rounded-full font-label-md">Ganti Gambar</span>
-                        </div>
-                      </div>
                     ) : (
                       <div className="flex flex-col items-center text-center space-y-2 py-4">
                         <div className="p-3 bg-primary/10 text-primary rounded-full">
                           <UploadCloud className="w-8 h-8" />
                         </div>
-                        <span className="text-sm font-semibold text-on-surface">Unggah gambar produk</span>
-                        <span className="text-xs text-on-surface-variant">PNG, JPG, WEBP maks 5MB</span>
+                        <span className="text-sm font-semibold text-on-surface">Tambah gambar produk</span>
+                        <span className="text-xs text-on-surface-variant">PNG, JPG, WEBP maks 5MB (Multiple)</span>
                       </div>
                     )}
                   </div>
@@ -483,35 +603,15 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     </div>
                   )}
 
-                  {/* Manual URL Fallback */}
-                  <div className="pt-2 border-t border-outline-variant space-y-base">
-                    <label className="text-xs font-medium text-on-surface-variant">Atau gunakan URL Gambar manual</label>
-                    <input 
-                      type="url"
-                      value={image}
-                      onChange={(e) => {
-                        setImage(e.target.value);
-                        if (selectedFile) {
-                          setSelectedFile(null);
-                          if (previewUrl && previewUrl.startsWith("blob:")) {
-                            URL.revokeObjectURL(previewUrl);
-                          }
-                          setPreviewUrl("");
-                        }
-                      }}
-                      placeholder="https://example.com/image.jpg"
-                      className="w-full px-4 py-2 text-sm border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                    />
-                    {(previewUrl || image) && (
-                      <button 
-                        type="button" 
-                        onClick={handleClearImage}
-                        className="text-xs font-medium text-error hover:underline flex items-center gap-1"
-                      >
-                        Hapus Gambar
-                      </button>
-                    )}
-                  </div>
+                  {(existingImages.length > 0 || previewUrls.length > 0) && (
+                    <button
+                      type="button"
+                      onClick={handleClearAllImages}
+                      className="w-full text-xs font-medium text-error hover:underline flex items-center justify-center gap-1 py-2"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" /> Hapus Semua Gambar
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="bg-primary-container/10 rounded-xl p-lg border border-primary/20">

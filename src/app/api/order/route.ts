@@ -73,39 +73,71 @@ export async function POST(req: NextRequest) {
     
     const finalAmount = amountPaid ? Number(amountPaid) : Number(total);
 
-    // create order beserta data paymentnya (Nested Write)
-    const order = await prisma.order.create({
-      data: {
-        userId: ["ADMIN", "KASIR"].includes(session.role.toUpperCase()) ? session.userId : null,
-        customerId: finalCustomerId,
-        addressId: finalAddressId,
-        total: Number(total),
-        note: note || null,
-        status: "PENDING",
-        paymentStatus: initialOrderPaymentStatus,
-        items: {
-          create: items.map((item: any) => ({
-            variantId: Number(item.variantId),
-            quantity: Number(item.quantity),
-            price: Number(item.price)
-          }))
-        },
-        payment: {
-          create: {
-            amount: finalAmount,
-            method: paymentMethod,
-            status: initialPaymentStatus,
-            proofOfPayment: paymentMethod === "TRANSFER" ? proofOfPayment : null,
-            paidAt: paidAt
-          }
+    // Validate stock and create order in transaction
+    const order = await prisma.$transaction(async (tx : any) => {
+      // Check stock availability for all items
+      for (const item of items) {
+        const variant = await tx.productVariant.findUnique({
+          where: { id: Number(item.variantId) }
+        });
+
+        if (!variant) {
+          throw new Error(`Variant with ID ${item.variantId} not found`);
         }
-      },
-      include: {
-        items: true,
-        customer: true,
-        address: true,
-        payment: true, // kembalikan juga data payment di response
+
+        if (variant.stock < Number(item.quantity)) {
+          throw new Error(`Insufficient stock for variant ${variant.size.name}. Available: ${variant.stock}, Requested: ${item.quantity}`);
+        }
       }
+
+      // Create order with stock reduction
+      const createdOrder = await tx.order.create({
+        data: {
+          userId: ["ADMIN", "KASIR"].includes(session.role.toUpperCase()) ? session.userId : null,
+          customerId: finalCustomerId,
+          addressId: finalAddressId,
+          total: Number(total),
+          note: note || null,
+          status: "PENDING",
+          paymentStatus: initialOrderPaymentStatus,
+          items: {
+            create: items.map((item: any) => ({
+              variantId: Number(item.variantId),
+              quantity: Number(item.quantity),
+              price: Number(item.price)
+            }))
+          },
+          payment: {
+            create: {
+              amount: finalAmount,
+              method: paymentMethod,
+              status: initialPaymentStatus,
+              proofOfPayment: paymentMethod === "TRANSFER" ? proofOfPayment : null,
+              paidAt: paidAt
+            }
+          }
+        },
+        include: {
+          items: true,
+          customer: true,
+          address: true,
+          payment: true,
+        }
+      });
+
+      // Reduce stock for each variant
+      for (const item of items) {
+        await tx.productVariant.update({
+          where: { id: Number(item.variantId) },
+          data: {
+            stock: {
+              decrement: Number(item.quantity)
+            }
+          }
+        });
+      }
+
+      return createdOrder;
     });
 
     // INTEGRASI MIDTRANS

@@ -147,8 +147,8 @@ export default function KasirPage() {
             {cart.map(item => (
               <div key={item.id} className="flex gap-4">
                 <div className="w-16 h-16 rounded-lg bg-surface-container-high overflow-hidden flex-shrink-0">
-                  {item.product.image ? (
-                    <img className="w-full h-full object-cover" src={item.product.image} alt={item.product.name} />
+                  {item.product.images && item.product.images.length > 0 ? (
+                    <img className="w-full h-full object-cover" src={item.product.images.find(img => img.isPrimary)?.url || item.product.images[0].url} alt={item.product.name} />
                   ) : (
                     <div className="w-full h-full bg-slate-200"></div>
                   )}
