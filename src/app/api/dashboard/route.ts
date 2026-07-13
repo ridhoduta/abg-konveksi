@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cancelExpiredTransferOrders } from "@/lib/order";
 
 export async function GET() {
   try {
+    // Cancel transfer orders that have been pending for >= 24 hours
+    await cancelExpiredTransferOrders();
+
     const now = new Date();
     const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);

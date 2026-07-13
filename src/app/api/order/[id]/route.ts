@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+import { cancelExpiredTransferOrders } from "@/lib/order";
 
 export async function GET(req: NextRequest, props: { params: Promise<{ id: string }> }) {
   try {
@@ -9,6 +10,9 @@ export async function GET(req: NextRequest, props: { params: Promise<{ id: strin
     if (!session || !["ADMIN", "KASIR", "CUSTOMER"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+
+    // Cancel transfer orders that have been pending for >= 24 hours
+    await cancelExpiredTransferOrders();
 
     const order = await prisma.order.findUnique({
       where: { id: Number(params.id) },

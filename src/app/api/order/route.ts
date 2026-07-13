@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+import { cancelExpiredTransferOrders } from "@/lib/order";
 
 
 export async function POST(req: NextRequest) {
@@ -196,6 +197,9 @@ export async function GET(req: NextRequest) {
     if (!session || !["ADMIN", "KASIR", "CUSTOMER"].includes(session.role.toUpperCase())) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+
+    // Cancel transfer orders that have been pending for >= 24 hours
+    await cancelExpiredTransferOrders();
 
     const orders = await prisma.order.findMany({
       where: session.role.toUpperCase() === "CUSTOMER" ? { customerId: session.userId } : undefined,
