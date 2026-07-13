@@ -15,6 +15,8 @@ export interface ProductVariant {
   productId: number;
   sizeId: number;
   price: number;
+  description?: string | null;
+  stock: number;
   size: Size;
 }
 
