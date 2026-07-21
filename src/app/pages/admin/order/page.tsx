@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { useOrder } from "../../hooks/useOrder";
 import { OrderTable } from "../../component/orderTable";
-import { Filter, Download } from "lucide-react";
 
 export default function AdminOrderPage() {
   const { orders, loading, error, fetchOrders, deleteOrder } = useOrder();

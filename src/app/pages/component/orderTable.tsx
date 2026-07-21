@@ -26,21 +26,52 @@ const PAYMENT_METHOD_OPTIONS = [
   { value: "COD", label: "COD" },
 ];
 
+const DAY_OPTIONS = [
+  { value: "", label: "Semua Hari" },
+  { value: "0", label: "Minggu" },
+  { value: "1", label: "Senin" },
+  { value: "2", label: "Selasa" },
+  { value: "3", label: "Rabu" },
+  { value: "4", label: "Kamis" },
+  { value: "5", label: "Jumat" },
+  { value: "6", label: "Sabtu" },
+];
+
+const toDateInputValue = (value: string) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const toMonthInputValue = (value: string) => toDateInputValue(value).slice(0, 7);
+
 export function OrderTable({ orders, onDelete }: { orders: any[], onDelete: (id: number) => void }) {
   const router = useRouter();
 
   const [filterStatus, setFilterStatus] = React.useState("");
   const [filterPaymentStatus, setFilterPaymentStatus] = React.useState("");
   const [filterPaymentMethod, setFilterPaymentMethod] = React.useState("");
+  const [filterDate, setFilterDate] = React.useState("");
+  const [filterMonth, setFilterMonth] = React.useState("");
+  const [filterDay, setFilterDay] = React.useState("");
 
   const filteredOrders = React.useMemo(() => {
     return orders.filter((o) => {
+      const orderDate = toDateInputValue(o.createdAt);
+      const orderMonth = toMonthInputValue(o.createdAt);
+      const orderDay = new Date(o.createdAt).getDay().toString();
       const matchStatus = !filterStatus || o.status === filterStatus;
       const matchPayStatus = !filterPaymentStatus || o.paymentStatus === filterPaymentStatus;
       const matchMethod = !filterPaymentMethod || o.payment?.[0]?.method === filterPaymentMethod;
-      return matchStatus && matchPayStatus && matchMethod;
+      const matchDate = !filterDate || orderDate === filterDate;
+      const matchMonth = !filterMonth || orderMonth === filterMonth;
+      const matchDay = !filterDay || orderDay === filterDay;
+      return matchStatus && matchPayStatus && matchMethod && matchDate && matchMonth && matchDay;
     });
-  }, [orders, filterStatus, filterPaymentStatus, filterPaymentMethod]);
+  }, [orders, filterStatus, filterPaymentStatus, filterPaymentMethod, filterDate, filterMonth, filterDay]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -89,7 +120,7 @@ export function OrderTable({ orders, onDelete }: { orders: any[], onDelete: (id:
     }
   };
 
-  const hasFilter = filterStatus || filterPaymentStatus || filterPaymentMethod;
+  const hasFilter = filterStatus || filterPaymentStatus || filterPaymentMethod || filterDate || filterMonth || filterDay;
 
   const SelectFilter = ({
     value, onChange, options,
@@ -108,6 +139,20 @@ export function OrderTable({ orders, onDelete }: { orders: any[], onDelete: (id:
     </div>
   );
 
+  const DateFilter = ({
+    value, onChange, type, label,
+  }: { value: string; onChange: (v: string) => void; type: "date" | "month"; label: string }) => (
+    <label className="flex items-center gap-2 px-3 py-2 text-xs font-medium border border-outline-variant rounded-xl bg-surface-container-lowest text-on-surface focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+      <span className="text-on-surface-variant">{label}</span>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="bg-transparent focus:outline-none cursor-pointer"
+      />
+    </label>
+  );
+
   return (
     <div className="flex flex-col w-full">
       {/* Filter Bar */}
@@ -115,10 +160,13 @@ export function OrderTable({ orders, onDelete }: { orders: any[], onDelete: (id:
         <SelectFilter value={filterStatus} onChange={setFilterStatus} options={STATUS_OPTIONS} />
         <SelectFilter value={filterPaymentStatus} onChange={setFilterPaymentStatus} options={PAYMENT_STATUS_OPTIONS} />
         <SelectFilter value={filterPaymentMethod} onChange={setFilterPaymentMethod} options={PAYMENT_METHOD_OPTIONS} />
+        <DateFilter value={filterDate} onChange={setFilterDate} type="date" label="Tanggal" />
+        <DateFilter value={filterMonth} onChange={setFilterMonth} type="month" label="Bulan" />
+        <SelectFilter value={filterDay} onChange={setFilterDay} options={DAY_OPTIONS} />
 
         {hasFilter && (
           <button
-            onClick={() => { setFilterStatus(""); setFilterPaymentStatus(""); setFilterPaymentMethod(""); }}
+            onClick={() => { setFilterStatus(""); setFilterPaymentStatus(""); setFilterPaymentMethod(""); setFilterDate(""); setFilterMonth(""); setFilterDay(""); }}
             className="px-3 py-2 text-xs font-medium text-error border border-error/30 rounded-xl hover:bg-error/10 transition-all"
           >
             Reset Filter

@@ -73,14 +73,47 @@ export async function POST(req: NextRequest) {
 
     // 5. Update tabel Order jika lunas
     if (orderPaymentStatus === "PAID") {
-      await prisma.order.update({
+      const order = await prisma.order.update({
         where: { id: orderIdInt },
         data: {
           paymentStatus: orderPaymentStatus,
-          // Opsional: Bisa langsung mengubah status order misal menjadi "PROCESSING" (sedang diproses pabrik)
-          // status: "PROCESSING" 
+          status: "PROCESSING" // Mengubah status order menjadi "PROCESSING" (Diproses) setelah pembayaran lunas
         }
       });
+
+      // Kirim notifikasi FCM ke pelanggan bahwa pesanan sedang diproses
+      if (order.customerId) {
+        try {
+          const customerTokens = await prisma.fcmToken.findMany({
+            where: { customerId: order.customerId },
+            select: { token: true }
+          });
+
+          if (customerTokens.length > 0) {
+            const tokens: string[] = customerTokens.map((t: { token: string }) => t.token);
+
+            // Import firebase-admin secara dinamis
+            const admin = (await import("@/lib/firebase-admin")).default;
+
+            const messages = tokens.map((token: string) => ({
+              token,
+              notification: {
+                title: "Update Status Pesanan",
+                body: `Pembayaran berhasil! Pesanan #${order.id} Anda sekarang sedang diproses.`,
+              },
+              data: {
+                orderId: String(order.id),
+                status: "PROCESSING",
+              }
+            }));
+
+            const response = await admin.messaging().sendEach(messages);
+            console.log(`Successfully sent ${response.successCount} FCM messages for order #${order.id}; ${response.failureCount} failed.`);
+          }
+        } catch (fcmError) {
+          console.error("Midtrans Webhook FCM Error:", fcmError);
+        }
+      }
     }
 
     return NextResponse.json({ message: "Webhook processed successfully" }, { status: 200 });

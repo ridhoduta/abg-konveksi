@@ -2,11 +2,10 @@
 
 import { useEffect } from "react";
 import { useOrder } from "../../hooks/useOrder";
-import { Filter, Download } from "lucide-react";
 import { OrderTableKasir } from "../../component/orderTableKasir";
 
 export default function AdminOrderPage() {
-  const { orders, loading, error, fetchOrders, deleteOrder } = useOrder();
+  const { orders, loading, error, fetchOrders } = useOrder();
 
   useEffect(() => {
     fetchOrders();
@@ -30,7 +29,7 @@ export default function AdminOrderPage() {
               <div className="spinner !border-primary !border-t-transparent w-8 h-8 rounded-full border-4"></div>
             </div>
           ) : (
-            <OrderTableKasir orders={orders} onDelete={deleteOrder} />
+            <OrderTableKasir orders={orders} />
           )}
         </section>
       </main>
